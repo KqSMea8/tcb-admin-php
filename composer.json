@@ -1,0 +1,21 @@
+{
+    "name": "tencentcloudbase/tcb-admin-php",
+    "description": "tencent cloud base admin sdk for php",
+    "type": "library",
+    "homepage": "https://github.com/TencentCloudBase/tcb-admin-php",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "heyli",
+            "email": "lcxfs1991@gmail.com",
+            "homepage": "https://github.com/lcxfs1991",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.4"
+    }
+}
