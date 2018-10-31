@@ -4,6 +4,9 @@
     "type": "library",
     "homepage": "https://github.com/TencentCloudBase/tcb-admin-php",
     "license": "Apache-2.0",
+    "scripts": {
+        "test": "phpunit ./tests -c ./tests/phpunit.xml --filter testRemoveData"
+    },
     "authors": [
         {
             "name": "heyli",
