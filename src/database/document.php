@@ -45,14 +45,14 @@ class DocumentReference {
      */
     public function create($data) {
         $args = array();
-        $args["action"] = "CreateDocument";
+        $args["action"] = "database.addDocument";
         
         $data = Util::encodeDocumentDataForReq($data, false, false);
         var_dump($data);
 
         $args["params"] = [
-            "CollectionName" => $this->_coll,
-            "Data" => json_encode($data)
+            "collectionName" => $this->_coll,
+            "data" => json_encode($data)
         ];
       
         if ($this->id) {
@@ -87,12 +87,12 @@ class DocumentReference {
         $query = [ "_id" => $this->id ];
         $merge = true; // 把所有更新数据转为带操作符的
         $args["params"] = [
-            "CollectionName" => $this->_coll,
-            "Data" => json_encode(Util::encodeDocumentDataForReq($data, $merge, true)),
-            "Query" => json_encode($query),
-            "Multi" => false,
-            "Merge" => $merge,
-            "Upsert" => false
+            "collectionName" => $this->_coll,
+            "data" => json_encode(Util::encodeDocumentDataForReq($data, $merge, true)),
+            "query" => json_encode($query),
+            "multi" => false,
+            "merge" => $merge,
+            "upsert" => false
         ];
 
         return $this->_db->cloudApiRequest($args);
@@ -104,15 +104,15 @@ class DocumentReference {
      * @return Array
      */
     public function remove() {
-        $args = array();
-        $args["action"] = "DeleteDocument";
+        $args = [];
+        $args["action"] = "database.deleteDocument";
 
         $query = ["_id" => $this->id];
 
         $args["params"] = [
-            "CollectionName" => $this->_coll,
-            "Query" => json_encode($query),
-            "Multi" => false
+            "collectionName" => $this->_coll,
+            "query" => json_encode($query),
+            "multi" => false
         ];
 
 
@@ -120,11 +120,32 @@ class DocumentReference {
     }
 
     public function get() {
+        $args = [];
+        $args["action"] = "database.queryDocument";
 
+        $query = ["_id" => $this->id];
+
+        $args["params"] = [
+            "collectionName" => $this->_coll,
+            "query" => json_encode($query),
+            "multi" => false,
+            "projection" => $this->projection
+        ];
+
+        return $this->_db->cloudApiRequest($args);
     }
 
-    public function field() {
-        
+    public function field($projection) {
+        $len = count($projection);
+        for ($i = 0; $i < $len; $i < $len) {
+            if ($projection[$i]) {
+                $projection[$i] = 1;
+            }
+            else {
+                $projection[$i] = 0;
+            }
+        }
+        return new DocumentReference($this->_db, $this->_coll, $this->id, $projection);
     }
 }
 

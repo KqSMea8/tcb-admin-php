@@ -81,4 +81,69 @@ const UpdateOperatorList = [
     '$position'
 ]; 
 
+// 数据库相关常量
+const INTERNAL_TYPE = [
+    'UNSET_FIELD_NAME' => 'UNSET_FIELD_NAME',
+    'UPDATE_COMMAND' => 'UPDATE_COMMAND',
+    'QUERY_COMMAND' => 'QUERY_COMMAND',
+    'LOGIC_COMMAND' => 'LOGIC_COMMAND',
+    'GEO_POINT' => 'GEO_POINT',
+    'SERVER_DATE' => 'SERVER_DATE'
+];
+
+// 查询运算符
+const QUERY_COMMANDS_LITERAL = [
+    "EQ" => 'eq',
+    "NEQ" => 'neq',
+    "GT" => 'gt',
+    "GTE" => 'gte',
+    "LT" => 'lt',
+    "LTE" => 'lte',
+    "IN" => 'in',
+    "NIN" => 'nin',
+];
+
+// 逻辑运算符
+const LOGIC_COMMANDS_LITERAL = [
+    O_AND => "and",
+    O_OR => "or",
+    O_NOT => "not",
+    O_NOR => "nor"
+];
+
+// 更新运算符
+const UPDATE_COMMANDS_LITERAL = [
+    SET => "set",
+    REMOVE => "remove",
+    INC => "inc",
+    MUL => "mul",
+    PUSH => "push",
+    POP => "pop",
+    SHIFT => "shift",
+    UNSHIFT => "unshift",
+];
+
+const O_AND = "and";
+const O_OR = "or";
+const O_NOT = "not";
+const O_NOR = "nor";
+
+const EQ = 'eq';
+const NEQ = 'neq';
+const GT = 'gt';
+const GTE = 'gte';
+const LT = 'lt';
+const LTE = 'lte';
+const IN = 'in';
+const NIN = 'nin';
+
+const SET = "set";
+const REMOVE = "remove";
+const INC = "inc";
+const MUL = "mul";
+const PUSH = "push";
+const POP = "pop";
+const SHIFT = "shift";
+const UNSHIFT = "unshift";
+
 ?>

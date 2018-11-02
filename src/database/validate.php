@@ -40,6 +40,10 @@ class Validate {
 
         return true;
     }
+
+    public static function isInternalObject($obj) {
+        return $obj->_internalType instanceof InternalSymbol;
+    }
 }
 
 

@@ -22,7 +22,7 @@ class TcbFunctions extends TcbBase {
         $data = array_key_exists('data', $options) ? $options['data'] : array();
 
         $args = array();
-        $args['action'] = 'InvokeFunction';
+        $args['action'] = 'functions.invokeFunction';
 
         $args['params'] = array(
             'FunctionName' => $name,

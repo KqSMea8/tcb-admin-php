@@ -2,6 +2,7 @@
 require_once "src/utils/base.php";
 require_once "src/database/serverDate/index.php";
 require_once "src/database/collection.php";
+require_once "src/database/command.php";
 
 require_once 'src/consts/code.php';
 
@@ -11,10 +12,11 @@ class TcbDatabase extends TcbBase {
 
     protected $config;
 
-    public static $command;
+    public $command;
 
     function __construct($config) {
         parent::__construct($config);
+        $this->command = new Command();
     }
 
     public function serverDate($options = ["offset" => 0]) {

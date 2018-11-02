@@ -8,17 +8,6 @@ use TencentCloud\Common\Profile\ClientProfile;
 use TencentCloud\Tcb\V20180608\TcbClient as Client;
 use TencentCloud\Tcb\V20180608\Models as Models;
 
-const actionModuleMap = [
-    'InvokeFunction' => 'functions',
-    'GetDownloadUrls' => 'storage',
-    'DeleteFiles' => 'storage',
-    'CreateCollection' => 'database',
-    'CreateDocument' => 'database',
-    'ModifyDocument' => 'database',
-    'DeleteDocument' => 'database',
-    'DescribeDocument' => 'database',
-];
-
 class TcbBase {
 
     protected $config;
@@ -36,7 +25,7 @@ class TcbBase {
 
         $params = array_merge([
             'CommParam' => [
-                'Module' => actionModuleMap[$action]
+                'Module' => $action
             ]
         ], $args['params']);
 

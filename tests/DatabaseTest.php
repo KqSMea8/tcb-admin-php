@@ -4,6 +4,36 @@ require_once "tests/config/index.php";
 
 use PHPUnit\Framework\TestCase;
 
+// [
+//     "a" => cmd->and([cmd->gte(10), cmd->lte(20)]),
+//     "b" => cmd->gte(30)
+// ]
+
+// => 
+
+// [
+//     [
+//         "$and" => [
+//             [
+//                 "a" => [
+//                     "$gte" => 10,
+//                 ]
+//             ],
+//             [
+//                 "a" => [
+//                     "$lte" => 20
+//                 ]
+//             ]
+//         ]
+//     ],
+//     [
+//         "b" => [
+//             "$gte" => 30
+//         ]
+//     ]
+
+// ]
+
 class DatabaseTest extends TestCase {
 
     private static $tcb;
@@ -64,6 +94,16 @@ class DatabaseTest extends TestCase {
         } 
     }
 
+    /** @test */
+    public function testQueryData() {
+        try {
+            $db = self::$tcb->getDatabase();
+            $db->collection('testcollection').where()
+        }
+        catch (Exception $e) {
+
+        }
+    }
 }
 
 ?>

@@ -1,15 +1,10 @@
 <?php
+require_once "src/database/constants.php";
+require_once "src/database/logic.php";
+require_once "src/database/query.php";
+require_once "src/database/update.php";
 
 class Command {
-    
-    public $logicParam;
-    private $placeholder = "{{{AAA}}}";
-      
-    function __construct($logicParam) {
-        if ($logicParam) {
-            $this->logicParam = $logicParam;
-        }
-    }
 
     /**
      * Query and Projection Operators
@@ -17,36 +12,36 @@ class Command {
      * @param target
      */
 
-    public function eq($target) {
-        return new Command($this->baseOperate('$eq', $target));
+    public function eq($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["EQ"], [$val]);
     }
 
-    public function neq($target) {
-        return new Command($this->baseOperate('$ne', $target));
+    public function neq($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["NEQ"], [$val]);
     }
 
-    public function gt($target) {
-        return new Command($this->baseOperate('$gt', $target));
+    public function gt($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["GT"], [$val]);
     }
 
-    public function gte($target) {
-        return new Command($this->baseOperate('$gte', $target));
+    public function gte($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["GTE"], [$val]);
     }
 
-    public function lt($target) {
-        return new Command($this->baseOperate('$lt', $target));
+    public function lt($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["LT"], [$val]);
     }
 
-    public function lte($target) {
-        return new Command($this->baseOperate('$lte', $target));
+    public function lte($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["LTE"], [$val]);
     }
 
-    public function in($target) {
-        return new Command($this->baseOperate('$in', $target));
+    public function in($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["IN"], [$val]);
     }
 
-    public function nin($target) {
-        return new Command($this->baseOperate('$nin', $target));
+    public function nin($val) {
+        return new QueryCommmand(QUERY_COMMANDS_LITERAL["NIN"], [$val]);
     }
 
     /**
@@ -55,106 +50,48 @@ class Command {
      * @param target
      */
 
-    public function mul($target) {
-        return new Command(['$mul' => [[$this->placeholder] => $target]]);
+    public function mul($val) {
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["MUL"], [$val]);
     }
 
-    public function remove($target) {
-        return new Command(['$unset' => [[$this->placeholder] => ""]]);
+    public function remove($val) {
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["REMOVE"], []);
     }
 
-    public function inc($target) {
-        return new Command(['$inc' => [[$this->placeholder] => $target]]);
+    public function inc($val) {
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["INC"], [$val]);
     }
 
-    public function set($target) {
-        return new Command(['$set' => [[$this->placeholder] => $target]]);
+    public function set($val) {
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["SET"], [$val]);
     }
 
-    public function push($target) {
-        $value = $target;
-        if (is_array($target)) {
-            $value = ['$each' => $target ];
-        }
-    
-        return new Command(['$push' => [[$this->placeholder] => $value]]);
+    public function push($val) {
+        $values = is_array($argv[0]) ? $argv[0] : $argv;
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["PUSH"], $values);
     }
 
     public function pop() {
-        return new Command(['$pop' => [[$this->placeholder] => 1 ]]);
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["POP"], []);
     }
 
-    public function unshift($target) {
-        $value = ['$each' => [$target], '$position' => 0];
-
-        if (is_array($target)) {
-            $value = ['$each' => $target, '$position' => 0];
-        }
-    
-        return new Command(['$push' => [[$this->placeholder] => $value]]);
+    public function unshift($val) {
+        $values = is_array($argv[0]) ? $argv[0] : $argv;
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["UNSHIFT"], $values);
     }
 
     public function shift() {
-        return new Command(['$pop' => [[$this->placeholder] => -1 ]]);
-    }
-
-    private function baseOperate($operator, $target) {
-        return [
-          [$this->placeholder] => [[$operator] => $target]
-        ];
+        return new UpdateCommand(UPDATE_COMMANDS_LITERAL["SHIFT"], []);
     }
 
     public function and() {
-        $targets = [];
-
-        if (count($argv) === 1 && is_array($argv[0])) {
-          $targets = $argv[0];
-        }
-        else {
-            $targets = $argv;
-        }
-
-        return new Command($this->connectOperate('$and', $targets));
+        $expressions = is_array($argv[0]) ? $argv[0] : $argv;
+        return new LogicCommand(LOGIC_COMMANDS_LITERAL["O_AND"], $expressions);
     }
 
     public function or() {
-        $targets = [];
-
-        if (count($argv) === 1 && is_array($argv[0])) {
-            $targets = $argv[0];
-        }
-        else {
-            $targets = $argv;
-        }
-
-        return new Command($this->connectOperate('$or', $targets));
-    }
-
-    private function connectOperate($operator, $targets) {
-        $logicParams = [];
-
-        if (count($this->logicParam)) {
-            array_push($logicParams, $this->logicParam);
-        }
-
-        foreach ($targets as $target) {
-            if ($target instanceof Command) {
-                if (count($target->logicParam) === 0) {
-                    continue;
-                }
-                $logicParams.push($target->logicParam);
-            }
-        }
-    }
-
-    public function parse($key) {
-        return json_decode(
-            preg_replace('/{{{AAA}}}/g', json_encode($this->logicParam), $key)
-        );
-    }
-
-    public function toString() {
-        return $this->logicParam[0];
+        $expressions = is_array($argv[0]) ? $argv[0] : $argv;
+        return new LogicCommand(LOGIC_COMMANDS_LITERAL["O_OR"], $expressions);
     }
 
 }

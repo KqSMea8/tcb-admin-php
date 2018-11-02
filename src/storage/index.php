@@ -46,7 +46,7 @@ class TcbStorage extends TcbBase {
         }
 
         $args = array();
-        $args['action'] = 'GetDownloadUrls';
+        $args['action'] = 'storage.batchGetDownloadUrl';
 
         $args['params'] = array(
             'Files' => $processFiles
@@ -92,7 +92,7 @@ class TcbStorage extends TcbBase {
         }
 
         $args = array();
-        $args['action'] = 'DeleteFiles';
+        $args['action'] = 'storage.batchDeleteFile';
 
         $args['params'] = array(
             'FileIds' => $fileList
