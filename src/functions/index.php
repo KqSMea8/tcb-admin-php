@@ -2,7 +2,7 @@
 require_once 'src/utils/base.php';
 require_once 'src/consts/code.php';
 
-use Tcb\Exception;
+use Tcb\TcbException;
 
 class TcbFunctions extends TcbBase {
 

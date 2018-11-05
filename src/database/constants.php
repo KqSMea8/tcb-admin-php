@@ -105,22 +105,22 @@ const QUERY_COMMANDS_LITERAL = [
 
 // 逻辑运算符
 const LOGIC_COMMANDS_LITERAL = [
-    O_AND => "and",
-    O_OR => "or",
-    O_NOT => "not",
-    O_NOR => "nor"
+    "O_AND" => "and",
+    "O_OR" => "or",
+    "O_NOT" => "not",
+    "O_NOR" => "nor"
 ];
 
 // 更新运算符
 const UPDATE_COMMANDS_LITERAL = [
-    SET => "set",
-    REMOVE => "remove",
-    INC => "inc",
-    MUL => "mul",
-    PUSH => "push",
-    POP => "pop",
-    SHIFT => "shift",
-    UNSHIFT => "unshift",
+    "SET" => "set",
+    "REMOVE" => "remove",
+    "INC" => "inc",
+    "MUL" => "mul",
+    "PUSH" => "push",
+    "POP" => "pop",
+    "SHIFT" => "shift",
+    "UNSHIFT" => "unshift",
 ];
 
 const O_AND = "and";

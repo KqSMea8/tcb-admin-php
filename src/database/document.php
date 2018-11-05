@@ -2,8 +2,9 @@
 
 require_once "src/database/util.php";
 require_once "src/consts/code.php";
+require_once "src/database/commands/update.php";
 
-use TencentCloud\Common\Exception\TencentCloudSDKException;
+use Tcb\TcbException;
 
 class DocumentReference {
 
@@ -62,8 +63,74 @@ class DocumentReference {
         return $this->_db->cloudApiRequest($args);
     }
 
-    public function set() {
+    /**
+     * 创建或添加数据
+     * 
+     * 如果文档ID不存在，则创建该文档并插入数据，根据返回数据的 upserted_id 判断
+     * 添加数据的话，根据返回数据的 set 判断影响的行数
+     *
+     * @param [Array] $data
+     * @return Array
+     */
+    public function set($data) {
+        if (!isset($data) || !is_array($data)) {
+            throw new TcbException(INVALID_PARAM, "参数必需是非空对象");
+        }
 
+        if (isset($data["_id"])) {
+            throw new TcbException(INVALID_PARAM, "不能更新_id的值");
+        }
+
+        // 检查操作符
+        $hasOperator = false;
+        function checkMixed($arr) {
+            if (is_array($arr)) {
+                foreach ($arr as $val) {
+                    if ($val instanceof UpdateCommand) {
+                        $hasOperator = true;
+                    }
+                    elseif (is_array($val)) {
+                        checkMixed($val);
+                    }
+                }
+            }
+        }
+        checkMixed($data);
+
+        // 不能包含操作符
+        if (hasOperator) {  
+            throw new TcbException(DATABASE_REQUEST_FAILED, "update operator complicit");
+        }
+
+        $args = [];
+        $args["action"] = "database.updateDocument";
+        $args["params"] = [
+            "collectionName" => $this->_coll,
+            "multi" => false,
+            "merge" => false, // data不能带有操作符
+            "upsert" => true,
+            "data" => $data
+        ];
+
+        if (isset($this->id)) {
+            $args["params"]["query"]["_id"] = $this->id;
+        }
+
+        $res = $this->_db->cloudApiRequest($args);
+
+        if (isset($res["code"])) {
+            return $res;
+        }
+        else {
+            $documents = Util::formatResDocumentData($res["data"]["list"]);
+            $result = [
+                "updated" => $res["data"]["updated"],
+                "upsertId" => $res["data"]["upsert_id"],
+                "requestId" => $res["requestId"]
+            ];
+
+            return $result;
+        }
     }
 
     /**
@@ -74,11 +141,11 @@ class DocumentReference {
      */
     public function update($data) {
         if (!isset($data) && !is_array($data)) {
-            throw new TencentCloudSDKException(EMPTY_PARAM, "参数必需是非空对象");
+            throw new TcbException(EMPTY_PARAM, "参数必需是非空对象");
         }
 
         if (isset($data["_id"])) {
-            throw new TencentCloudSDKException(INVALID_PARAM, "不能更新 _id 的值");
+            throw new TcbException(INVALID_PARAM, "不能更新 _id 的值");
         }
 
         $args = array();
@@ -95,7 +162,21 @@ class DocumentReference {
             "upsert" => false
         ];
 
-        return $this->_db->cloudApiRequest($args);
+        $res = $this->_db->cloudApiRequest($args);
+
+        if (isset($res["code"])) {
+            return $res;
+        }
+        else {
+            $documents = Util::formatResDocumentData($res["data"]["list"]);
+            $result = [
+                "updated" => $res["data"]["updated"],
+                "upsertId" => $res["data"]["upsert_id"],
+                "requestId" => $res["requestId"]
+            ];
+
+            return $result;
+        }
     }
 
     /**
@@ -116,7 +197,20 @@ class DocumentReference {
         ];
 
 
-        return $this->_db->cloudApiRequest($args);
+        $res = $this->_db->cloudApiRequest($args);
+
+        if (isset($res["code"])) {
+            return $res;
+        }
+        else {
+            $documents = Util::formatResDocumentData($res["data"]["list"]);
+            $result = [
+                "deleted" => $res["data"]["deleted"],
+                "requestId" => $res["requestId"]
+            ];
+
+            return $result;
+        }
     }
 
     public function get() {
@@ -132,17 +226,38 @@ class DocumentReference {
             "projection" => $this->projection
         ];
 
-        return $this->_db->cloudApiRequest($args);
+        $res = $this->_db->cloudApiRequest($args);
+
+        if (isset($res["code"])) {
+            return $res;
+        }
+        else {
+            $documents = Util::formatResDocumentData($res["data"]["list"]);
+            $result = [
+                "data" => $documents,
+                "requestId" => $res["requestId"]
+            ];
+    
+            if (isset($res["TotalCount"])) {
+                $result["total"] = $res["TotalCount"];
+            }
+            if (isset($res["Limit"])) {
+                $result["limit"] = $res["Limit"];
+            }
+            if (isset($res["Offset"])) {
+                $result["offset"] = $res["Offset"];
+            }
+            return $result;
+        }
     }
 
     public function field($projection) {
-        $len = count($projection);
-        for ($i = 0; $i < $len; $i < $len) {
-            if ($projection[$i]) {
-                $projection[$i] = 1;
+        foreach ($projection as $k => $v) {
+            if (isset($projection[$k])) {
+              $projection[$k] = 1;
             }
             else {
-                $projection[$i] = 0;
+              $projection[$k] = 0;
             }
         }
         return new DocumentReference($this->_db, $this->_coll, $this->id, $projection);

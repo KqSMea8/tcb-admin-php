@@ -17,4 +17,18 @@ const INVALID_TYPE = 'INVALID_TYPE';
 
 const INVALID_RANGE = 'INVALID_RANGE';
 
+const DocIDError = 'DocIDError';
+
+const CollNameError = 'CollNameError';
+
+const OpStrError = 'OpStrError';
+
+const DirectionError = 'DirectionError';
+
+const IntergerError = 'IntergerError';
+
+const INVALID_FIELD_PATH = 'INVALID_FIELD_PATH';
+
+const DATABASE_REQUEST_FAILED = 'DATABASE_REQUEST_FAILED';
+
 ?>

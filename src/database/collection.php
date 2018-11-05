@@ -41,7 +41,6 @@ class CollectionReference extends Query {
     }
 
     public function __get($name) {
-        
         // 读取集合名字
         if ($name === 'name') {
             return $this->_coll;

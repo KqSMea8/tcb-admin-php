@@ -2,7 +2,7 @@
 require_once 'src/utils/base.php';
 require_once 'src/consts/code.php';
 
-use TencentCloud\Common\Exception\TencentCloudSDKException;
+use Tcb\TcbException;
 
 class TcbStorage extends TcbBase {
 
@@ -15,7 +15,7 @@ class TcbStorage extends TcbBase {
     public function getTempFileURL($options = []) {
 
         if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
-            throw new TencentCloudSDKException(INVALID_PARAM, '参数fileList类型必须是数据');
+            throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
         }
 
         $fileList = $options['fileList'];
@@ -27,7 +27,7 @@ class TcbStorage extends TcbBase {
                     !array_key_exists('fileID', $file) ||
                     !array_key_exists('maxAge', $file)
                   ) {
-                    throw new TencentCloudSDKException(INVALID_PARAM, 'fileList的元素必须是包含fileID和maxAge的对象');
+                    throw new TcbException(INVALID_PARAM, 'fileList的元素必须是包含fileID和maxAge的对象');
                   }
                 
                 array_push($processFiles, array(
@@ -41,7 +41,7 @@ class TcbStorage extends TcbBase {
                 ));
             }
             else {
-                throw new TencentCloudSDKException(INVALID_PARAM, 'fileList的元素必须是字符串');
+                throw new TcbException(INVALID_PARAM, 'fileList的元素必须是字符串');
             }
         }
 
@@ -56,7 +56,7 @@ class TcbStorage extends TcbBase {
 
         // 如果 code 和 message 存在，证明报错了
         if (property_exists($result, 'code')) {
-            throw new TencentCloudSDKException($result->code, $result->message, $result->RequestId);
+            throw new TcbException($result->code, $result->message, $result->RequestId);
         }
 
         $tmpFiles = [];
@@ -80,14 +80,14 @@ class TcbStorage extends TcbBase {
     public function deleteFile($options = []) {
         
         if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
-            throw new TencentCloudSDKException(INVALID_PARAM, '参数fileList类型必须是数据');
+            throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
         }
 
         $fileList = $options['fileList'];
         
         foreach ($fileList as $file) {
             if (!is_string($file)) {
-                throw new TencentCloudSDKException(INVALID_PARAM, 'fileList的元素必须是非空的字符串');
+                throw new TcbException(INVALID_PARAM, 'fileList的元素必须是非空的字符串');
             }
         }
 
@@ -103,7 +103,7 @@ class TcbStorage extends TcbBase {
 
             // 如果 code 和 message 存在，证明报错了
             if (property_exists($result, 'code')) {
-                throw new TencentCloudSDKException($result->code, $result->message, $result->RequestId);
+                throw new TcbException($result->code, $result->message, $result->RequestId);
             }
 
             $tmpFiles = [];
@@ -124,7 +124,7 @@ class TcbStorage extends TcbBase {
 
         }
         catch (Exception $e) {
-            throw new TencentCloudSDKException($e->getErrorCode(), $e->getMessage());
+            throw new TcbException($e->getErrorCode(), $e->getMessage());
         }
 
     }
@@ -175,7 +175,7 @@ class TcbStorage extends TcbBase {
             }
         }
         catch (Exception $e) {
-            throw new TencentCloudSDKException($e->getErrorCode(), $e->getMessage());
+            throw new TcbException($e->getErrorCode(), $e->getMessage());
         }
     }
 }
