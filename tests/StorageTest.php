@@ -1,6 +1,6 @@
 <?php
 require_once "index.php";
-require_once "tests/config/index.php";
+// require_once "tests/config/index.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -10,6 +10,7 @@ class StorageTest extends TestCase {
 
     public static function setUpBeforeClass() {
         global $TcbConfig;
+        $TcbConfig = array("secretId"=>"AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p","secretKey"=>"juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq","env"=>"tcbenv-mPIgjhnq");
         self::$tcb = new Tcb($TcbConfig);
     }
 

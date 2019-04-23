@@ -1,6 +1,6 @@
 <?php
 require_once "index.php";
-require_once "tests/config/index.php";
+// require_once "tests/config/index.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -98,7 +98,7 @@ class DatabaseTest extends TestCase {
     public function testQueryData() {
         try {
             $db = self::$tcb->getDatabase();
-            $db->collection('testcollection').where()
+            $db->collection('testcollection').where();
         }
         catch (Exception $e) {
 

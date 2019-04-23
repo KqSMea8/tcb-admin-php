@@ -1,18 +1,22 @@
 <?php
 require_once 'src/utils/base.php';
 require_once 'src/consts/code.php';
+require_once 'src/utils/exception.php';
 
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
 
-class TcbFunctions extends TcbBase {
+class TcbFunctions extends TcbBase
+{
 
     protected $config;
 
-    function __construct($config) {
+    function __construct($config)
+    {
         parent::__construct($config);
     }
 
-    public function callFunction($options) {
+    public function callFunction($options)
+    {
 
         if (!array_key_exists('name', $options)) {
             throw new TcbException(FUNCTIONS_NAME_REQUIRED, '函数名不能为空');
@@ -41,11 +45,9 @@ class TcbFunctions extends TcbBase {
                 'requestId' => $result->RequestId,
                 'result' => json_decode($result->Result),
             ];
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new TcbException($e->getErrorCode(), $e->getMessage());
         }
     }
 }
-
 ?>

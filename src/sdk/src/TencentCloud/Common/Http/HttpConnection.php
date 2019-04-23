@@ -63,9 +63,12 @@ class HttpConnection
         }
 
         if ($body) {
-            $options["form_params"] = $body;
+            // $options["form_params"] = $body;
+            $options["json"] = $body;
         }
+
         return $this->client->post($uri, $options);
     }
 }
 
+?>

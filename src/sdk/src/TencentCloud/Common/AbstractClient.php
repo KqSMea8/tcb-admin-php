@@ -81,9 +81,9 @@ abstract class AbstractClient
      * @param string $region 产品地域
      * @param ClientProfile $profile
      */
-    function __construct($endpoint, $version, $credential, $region, $profile=null)
+    function __construct($endpoint, $version, $credential, $region, $profile = null)
     {
-        $this->path = "/";
+        $this->path = "/admin";
 
         $this->credential = $credential;
         $this->region = $region;
@@ -211,6 +211,15 @@ abstract class AbstractClient
     private function postRequest($action, $request)
     {
         $body = $this->formatRequestData($action, $request, httpProfile::$REQ_POST);
+        $body = array('authorization'=>'q-sign-algorithm=sha1&q-ak=AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p&q-sign-time=1555981551;1555982451&q-key-time=1555981551;1555982451&q-header-list=content-type;user-agent&q-url-param-list=action;envname;eventid;file_list;timestamp&q-signature=618f7aaf28ff37356c806a398a9e208b2f7477c0',
+                        'envName'=>'tcbenv-mPIgjhnq',
+                        'eventId'=>'1555937477662_35422',
+                        'file_list'=> array(array('fileid'=>'cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg')),
+                        'path'=>'a|b.jpeg',
+                        'sdk_version'=>'1.5.0-beta.1',
+                        'timestamp'=>'1555937477663',
+                        'action'=>'storage.batchGetDownloadUrl'
+                        );
         $connect = $this->createConnect();
         return $connect->postRequest($this->path, [], $body);
     }
@@ -221,11 +230,11 @@ abstract class AbstractClient
     private function formatRequestData($action, $request, $reqMethod)
     {
         $param = $request;
-        $param["Action"] = ucfirst($action);
-        $param["RequestClient"] = $this->sdkVersion;
-        $param["Nonce"] = rand();
-        $param["Timestamp"] = time();
-        $param["Version"] = $this->apiVersion;
+        $param["action"] = ucfirst($action);
+        $param["sdk_version"] = $this->sdkVersion;
+        // $param["Nonce"] = rand();
+        $param["timestamp"] = time();
+        // $param["Version"] = $this->apiVersion;
 
         if ($this->credential->getSecretId()) {
             $param["SecretId"] = $this->credential->getSecretId();
@@ -243,15 +252,19 @@ abstract class AbstractClient
             $param["SignatureMethod"] = $this->profile->getSignMethod();
         }
 
-        $signStr = $this->formatSignString($this->profile->getHttpProfile()->getEndpoint(),
-            $this->path, $param,  $reqMethod);
+        $signStr = $this->formatSignString(
+            $this->profile->getHttpProfile()->getEndpoint(),
+            $this->path,
+            $param,
+            $reqMethod
+        );
         $param["Signature"] = Sign::sign($this->credential->getSecretKey(), $signStr, $this->profile->getSignMethod());
         return $param;
     }
 
     private function createConnect()
     {
-        return new HttpConnection($this->profile->getHttpProfile()->getProtocol().
+        return new HttpConnection($this->profile->getHttpProfile()->getProtocol() .
             $this->profile->getHttpProfile()->getEndpoint(), $this->profile);
     }
 
@@ -260,14 +273,15 @@ abstract class AbstractClient
         $tmpParam = [];
         ksort($param);
         foreach ($param as $key => $value) {
-            array_push($tmpParam, str_replace("_",".",$key) . "=" . $value);
+            array_push($tmpParam, str_replace("_", ".", $key) . "=" . $value);
         }
-        $strParam = join ("&", $tmpParam);
-        $signStr = strtoupper($requestMethod) . $host . $uri ."?".$strParam;
+        $strParam = join("&", $tmpParam);
+        $signStr = strtoupper($requestMethod) . $host . $uri . "?" . $strParam;
         return $signStr;
     }
 
-    private function getPrivateMethod($obj, $methodName) {
+    private function getPrivateMethod($obj, $methodName)
+    {
         $objReflectClass = new ReflectionClass(get_class($obj));
         $method = $objReflectClass->getMethod($methodName);
         $method->setAccessible(true);
