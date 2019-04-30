@@ -4,15 +4,43 @@ require_once 'src/consts/code.php';
 
 use Tcb\TcbException;
 
-class TcbStorage extends TcbBase {
+class TcbStorage extends TcbBase
+{
 
     protected $config;
 
-    function __construct($config) {
+    function __construct($config)
+    {
         parent::__construct($config);
     }
 
-    public function getTempFileURL($options = []) {
+    public function uploadFile($options = [])
+    {
+        $params = array(
+            'action' => 'storage.uploadFile',
+            'path' => $options['cloudPath'],
+            'file' => $options['fileContent']
+        );
+
+        $args = array();
+        $args['params'] = $params;
+        $args['method'] = 'post';
+        $args['headers'] = array();
+        $result = $this->cloudApiRequest($args);
+
+        //
+        if (array_key_exists('code', $result)) {
+            throw new TcbException($result['code'], $result['message'], $result['requestId']);
+        }
+        return [
+            'fileid' => $result['data']['fileID'],
+            'requestId' => $result['requestId'],
+            'code' => $result['data']['message']
+        ];
+    }
+
+    public function getTempFileURL($options = [])
+    {
 
         if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
             throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
@@ -26,65 +54,67 @@ class TcbStorage extends TcbBase {
                 if (
                     !array_key_exists('fileID', $file) ||
                     !array_key_exists('maxAge', $file)
-                  ) {
+                ) {
                     throw new TcbException(INVALID_PARAM, 'fileList的元素必须是包含fileID和maxAge的对象');
-                  }
-                
+                }
+
                 array_push($processFiles, array(
-                    'FileId' => $file['fileID'],
-                    'TTL' => $file['maxAge']
+                    'fileid' => $file['fileID']
+                    // 'MaxAge' => $file['maxAge']
                 ));
-            }
-            elseif (is_string($file)) {
+            } elseif (is_string($file)) {
                 array_push($processFiles, array(
-                    'FileId' => $file
+                    'fileid' => $file
                 ));
-            }
-            else {
+            } else {
                 throw new TcbException(INVALID_PARAM, 'fileList的元素必须是字符串');
             }
         }
 
         $args = array();
-        $args['action'] = 'storage.batchGetDownloadUrl';
-
+        // $args['action'] = 'storage.batchGetDownloadUrl';
         $args['params'] = array(
-            'Files' => $processFiles
+            'file_list' => $processFiles,
+            'action' => 'storage.batchGetDownloadUrl'
         );
+        $args['method'] = 'post';
+        $args['headers'] = array("content-type" => "application/json");
 
         $result = $this->cloudApiRequest($args);
+        // print_r($result);
 
         // 如果 code 和 message 存在，证明报错了
-        if (property_exists($result, 'code')) {
-            throw new TcbException($result->code, $result->message, $result->RequestId);
+        if (array_key_exists('code', $result)) {
+            throw new TcbException($result['code'], $result['requestId']);
         }
 
         $tmpFiles = [];
 
-        foreach ($result->DownloadList as $file) {
+        foreach ($result['data']['download_list'] as $file) {
             $tmpFiles = array_merge($tmpFiles, [
                 [
-                    'code' => $file->Code,
-                    'fileID' => $file->FileId,
-                    'tempFileURL' => $file->DownloadUrl
+                    'code' => $file['code'],
+                    'fileID' => $file['fileID'],
+                    'tempFileURL' => $file['tempFileURL']
                 ]
             ]);
         }
 
         return [
             'fileList' => $tmpFiles,
-            'requestId' => $result->RequestId
+            'requestId' => $result['requestId']
         ];
     }
 
-    public function deleteFile($options = []) {
-        
+    public function deleteFile($options = [])
+    {
+
         if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
             throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
         }
 
         $fileList = $options['fileList'];
-        
+
         foreach ($fileList as $file) {
             if (!is_string($file)) {
                 throw new TcbException(INVALID_PARAM, 'fileList的元素必须是非空的字符串');
@@ -92,61 +122,58 @@ class TcbStorage extends TcbBase {
         }
 
         $args = array();
-        $args['action'] = 'storage.batchDeleteFile';
-
+        // $args['action'] = 'storage.batchDeleteFile';
         $args['params'] = array(
-            'FileIds' => $fileList
+            'fileid_list' => $fileList,
+            'action' => 'storage.batchDeleteFile'
         );
+        $args['method'] = 'post';
+        $args['headers'] = array("content-type" => "application/json");
 
         try {
             $result = $this->cloudApiRequest($args);
 
             // 如果 code 和 message 存在，证明报错了
-            if (property_exists($result, 'code')) {
+            if (array_key_exists('code', $result)) {
                 throw new TcbException($result->code, $result->message, $result->RequestId);
             }
 
             $tmpFiles = [];
 
-            foreach ($result->DeletedFiles as $file) {
-                $tmpFiles = array_merge($tmpFiles, [
-                    [
-                        'code' => $file->Code,
-                        'fileID' => $file->FileId
-                    ]
-                ]);
-            }
+            // foreach ($result->DeletedFiles as $file) {
+            //     $tmpFiles = array_merge($tmpFiles, [
+            //         [
+            //             'code' => $file->Code,
+            //             'fileID' => $file->FileId
+            //         ]
+            //     ]);
+            // }
 
             return [
-                'fileList' => $tmpFiles,
-                'requestId' => $result->RequestId
+                'fileList' => $result['data']['delete_list'],
+                'requestId' => $result['requestId']
             ];
-
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new TcbException($e->getErrorCode(), $e->getMessage());
         }
-
     }
 
-    public function downloadFile($options = []) {
+    public function downloadFile($options = [])
+    {
 
         $fileID = $options['fileID'];
         $tempFilePath = array_key_exists('tempFilePath', $options) ?  $options['tempFilePath'] : null;
 
         $tmpUrlRes = $this->getTempFileURL([
-            'fileList' => [
-                [
-                    'fileID' => $fileID,
-                    'maxAge' => 600
-                ]
+            "fileList" => [
+                ["fileID" => "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg", "maxAge" => 100000]
             ]
         ]);
 
         if (count($tmpUrlRes['fileList']) == 0) {
             return [
                 'code' => 'NO_FILE_EXISTS',
-                'message'=> '没有获取任何文件'
+                'message' => '没有获取任何文件'
             ];
         }
 
@@ -166,19 +193,14 @@ class TcbStorage extends TcbBase {
                 return [
                     'requestId' => $tmpUrlRes['requestId']
                 ];
-            }
-            else {
+            } else {
                 return [
                     'fileContent' => $file,
                     'requestId' => $tmpUrlRes['requestId']
                 ];
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new TcbException($e->getErrorCode(), $e->getMessage());
         }
     }
 }
-
-
-?>
