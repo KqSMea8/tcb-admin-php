@@ -1,4 +1,5 @@
 <?php
+
 require_once 'src/database/index.php';
 require_once 'src/database/query.php';
 require_once 'src/database/document.php';
@@ -6,7 +7,8 @@ require_once 'src/database/document.php';
 /**
  * 集合模块，继承 Query 模块
  */
-class CollectionReference extends Query {
+class CollectionReference extends Query
+{
 
     /**
      * 初始化
@@ -14,7 +16,8 @@ class CollectionReference extends Query {
      * @param [TcbDatabase] $db
      * @param [String] $coll
      */
-    function __construct($db, $coll) {
+    public function __construct($db, $coll)
+    {
         parent::__construct($db, $coll);
     }
 
@@ -24,7 +27,8 @@ class CollectionReference extends Query {
      * @param [String] $docID
      * @return DocumentReference
      */
-    public function doc($docID = null) {
+    public function doc($docID = null)
+    {
         return new DocumentReference($this->_db, $this->_coll, $docID);
     }
 
@@ -35,17 +39,17 @@ class CollectionReference extends Query {
      * @param [Array] $data
      * @return void
      */
-    public function add($data = []) {
+    public function add($data = [], $callback = null)
+    {
         $docRef = $this->doc();
-        return $docRef->create($data);
+        return $docRef->create($data, $callback);
     }
 
-    public function __get($name) {
+    public function __get($name)
+    {
         // 读取集合名字
         if ($name === 'name') {
             return $this->_coll;
         }
     }
 }
-
-?>

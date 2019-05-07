@@ -1,7 +1,8 @@
 <?php
 require_once './src/functions/index.php';
 require_once './src/storage/index.php';
-// require_once './src/database/index.php';
+require_once './src/database/index.php';
+require_once './src/database/db.php';
 
 class TCB
 {
@@ -52,7 +53,8 @@ class TCB
         return new TcbStorage($this->config);
     }
 
-    // public function getDatabase() {
-    //     return new TcbDatabase($this->config);
-    // }
+    public function getDatabase($dbConfig = [])
+    {
+        return new Db(array_merge($this->config, $dbConfig));
+    }
 }

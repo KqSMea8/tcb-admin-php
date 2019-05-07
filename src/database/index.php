@@ -8,28 +8,32 @@ require_once 'src/consts/code.php';
 
 use TencentCloud\Common\Exception\TencentCloudSDKException;
 
-class TcbDatabase extends TcbBase {
+class TcbDatabase extends TcbBase
+{
 
     protected $config;
 
     public $command;
 
-    function __construct($config) {
+    function __construct($config)
+    {
         parent::__construct($config);
         $this->command = new Command();
     }
 
-    public function serverDate($options = ["offset" => 0]) {
+    public function serverDate($options = ["offset" => 0])
+    {
         $offset = $options["offset"];
         return new ServerDate(["offset" => $offset]);
     }
 
-    public function collection($collName = null) {
+    public function collection($collName = null)
+    {
         if (!isset($collName)) {
             throw new TencentCloudSDKException(EMPTY_PARAM, "Collection name is required");
         }
-        
-          return new CollectionReference($this, $collName);
+
+        return new CollectionReference($this, $collName);
     }
 
     /**
@@ -38,7 +42,8 @@ class TcbDatabase extends TcbBase {
      * @param [String] $collName
      * @return Array
      */
-    public function createCollection($collName = null) {
+    public function createCollection($collName = null)
+    {
         if (!isset($collName)) {
             throw new TencentCloudSDKException(EMPTY_PARAM, "Collection name is required");
         }
@@ -60,8 +65,4 @@ class TcbDatabase extends TcbBase {
             "requestId" => $result->RequestId
         ];
     }
-
 }
-
-
-?>

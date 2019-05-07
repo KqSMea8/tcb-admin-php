@@ -34,76 +34,77 @@ use PHPUnit\Framework\TestCase;
 
 // ]
 
-class DatabaseTest extends TestCase {
+class DatabaseTest extends TestCase
+{
 
     private static $tcb;
 
-    public static function setUpBeforeClass() {
+    private static $databaseConfig;
+
+    public static function setUpBeforeClass()
+    {
         global $TcbConfig;
+        $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq", "env" => "tcbenv-mPIgjhnq");
         self::$tcb = new Tcb($TcbConfig);
     }
 
     /** @test */
-    public function testCreateCollection() {
+    public function testCreateCollection()
+    {
         try {
             $db = self::$tcb->getDatabase();
             $result = $db->createCollection("testcollection");
-        
+
             var_dump($result);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
             echo $code;
             echo "\r\n";
             echo $e->getMessage();
-        } 
+        }
     }
 
     /** @test */
-    public function testAddData() {
+    public function testAddData()
+    {
         try {
             $db = self::$tcb->getDatabase();
             $db->collection('testcollection')->add([
-                "name"=> "heyli",
+                "name" => "heyli",
                 "sex" => "male",
                 "age" => 27,
                 "location" => new Point(90, 30),
                 "loginTime" => new ServerDate(["offset" => 120000]), // 毫秒
                 "regTime" => new DateTime('2018-10-01')
             ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
             echo $code;
             echo "\r\n";
             echo $e->getMessage();
-        } 
+        }
     }
 
     /** @test */
-    public function testRemoveData() {
+    public function testRemoveData()
+    {
         try {
             $db = self::$tcb->getDatabase();
             $db->collection('testcollection')->doc("W9lw-3hEiJmgG5_5")->remove();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
             echo $code;
             echo "\r\n";
             echo $e->getMessage();
-        } 
+        }
     }
 
     /** @test */
-    public function testQueryData() {
+    public function testQueryData()
+    {
         try {
             $db = self::$tcb->getDatabase();
-            $db->collection('testcollection').where();
-        }
-        catch (Exception $e) {
-
-        }
+            $db->collection('testcollection') . where();
+        } catch (Exception $e) { }
     }
 }
-
-?>
