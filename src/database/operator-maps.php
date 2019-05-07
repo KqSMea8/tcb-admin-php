@@ -6,15 +6,15 @@ require_once "src/database/commands/update.php";
 $maps = [];
 
 foreach (QUERY_COMMANDS_LITERAL as $val) {
-    $maps[$val] = `$`.strtolower($val);
+  $maps[$val] = `$` . strtolower($val);
 }
 
 foreach (LOGIC_COMMANDS_LITERAL as $val) {
-    $maps[$val] = `$`.strtolower($val);
+  $maps[$val] = `$` . strtolower($val);
 }
 
 foreach (UPDATE_COMMANDS_LITERAL as $val) {
-    $maps[$val] = `$`.strtolower($val);
+  $maps[$val] = `$` . strtolower($val);
 }
 
 // some exceptions
@@ -25,7 +25,7 @@ $maps[UPDATE_COMMANDS_LITERAL[UNSHIFT]] = '$push'; // same as PUSH
 
 define('OperatorMap', $maps);
 
-function operatorToString($operator) {
-  return isset(OperatorMap[$operator]) ? OperatorMap[$operator] : `$`.strtolower($operator);
+function operatorToString($operator)
+{
+  return isset(OperatorMap[$operator]) ? OperatorMap[$operator] : `$` . strtolower($operator);
 }
-?>

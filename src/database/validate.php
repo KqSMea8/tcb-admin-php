@@ -1,10 +1,12 @@
 <?php
+namespace Tcb\Validate;
 
 require_once "src/consts/code.php";
 require_once "src/database/constants.php";
 require_once "src/database/util.php";
 
 use TCB\TcbException;
+use Tcb\Util\Util;
 
 /**
  * 校验模块

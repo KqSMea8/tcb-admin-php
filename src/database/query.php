@@ -11,7 +11,8 @@ require_once "src/database/utils/dataFormat.php";
 // require_once "src/database/serializer/update.php";
 
 use Tcb\TcbException;
-use function Tcb\DataFormat\dataFormat;
+use Tcb\Util\Util;
+// use function Tcb\DataFormat\dataFormat;
 
 class Query
 {
@@ -121,7 +122,7 @@ class Query
       $params["projection"] = $this->_queryOptions["projection"];
     }
 
-    $res = $this->request->sendMidData('database.queryDocument', $params);
+    $res = $this->_request->sendMidData('database.queryDocument', $params);
 
     if (isset($res["code"])) {
       return $res;
@@ -163,7 +164,7 @@ class Query
       $params["query"] = $this->_fieldFilters;
     }
 
-    $res = $this->request->sendMidData('database.countDocument', $params);
+    $res = $this->_request->sendMidData('database.countDocument', $params);
 
     if (isset($res["code"])) {
       return $res;
@@ -182,12 +183,12 @@ class Query
    * @param [Array] $query
    * @return Query
    */
-  public function where(object $query)
+  public function where($query) // 类型约束
   {
     return new Query(
       $this->_db,
       $this->_coll,
-      dataFormat($query),
+      Format::dataFormat($query),
       $this->_fieldOrders,
       $this->_queryOptions
     );
@@ -289,11 +290,11 @@ class Query
       "multi" => true,
       "merge" => true,
       "upsert" => false,
-      "data" => dataFormat($data),
+      "data" => Format::dataFormat($data),
       "interfaceCallSource" => 'BATCH_UPDATE_DOC'
     ];
 
-    $res = $this->request->sendMidData('database.updateDocument', $params);
+    $res = $this->_request->sendMidData('database.updateDocument', $params);
 
     if (isset($res["code"])) {
       return $res;
@@ -359,7 +360,7 @@ class Query
       "multi" => true,
     ];
 
-    $res = $this->request->sendMidData("database.deleteDocument", $params);
+    $res = $this->_request->sendMidData("database.deleteDocument", $params);
 
     if (isset($res["code"])) {
       return $res;

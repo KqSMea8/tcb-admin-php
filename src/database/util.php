@@ -1,11 +1,20 @@
 <?php
+namespace Tcb\Util;
+
 require_once "src/database/constants.php";
 require_once 'src/database/serverDate/index.php';
 require_once 'src/database/geo/point.php';
+
 require_once 'src/database/command.php';
 require_once 'src/consts/code.php';
 
+// use Tcb\Geo\Point\Point;
+use Tcb\Geo\LineString\LineString;
+use Tcb\Geo\MultiLineString\MultiLineString;
 use Tcb\Geo\Point\Point;
+use Tcb\Geo\MultiPoint\MultiPoint;
+use Tcb\Geo\Polygon\Polygon;
+use Tcb\Geo\MultiPolygon\MultiPolygon;
 
 class Util
 {
@@ -55,6 +64,9 @@ class Util
    */
   private static function is_assoc($arr)
   {
+    if (!is_array($arr)) {
+      return false;
+    }
     return array_keys($arr) !== range(0, count($arr) - 1);
   }
 

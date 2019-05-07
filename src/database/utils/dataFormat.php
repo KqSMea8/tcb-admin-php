@@ -1,41 +1,62 @@
 <?php
-namespace Tcb\DataFormat;
+// namespace Tcb\DataFormat;
 
-function checkSpecialClass($data)
-{
-  if (get_class($data) === 'Point' || get_class($data) === 'LineString' || get_class($data) === 'Polygon' || get_class($data) === 'MultiPoint' || get_class($data) === 'MultiLineString' || get_class($data) === 'MultiPolygon') {
-    return 'Geo';
-  }
-  if (get_class($data) === 'RegExp') {
-    return 'regExp';
-  }
-  if (get_class($data) === 'ServerDate') {
-    return 'serverDate';
-  }
-  return '';
-}
+use Tcb\Geo\LineString\LineString;
+use Tcb\Geo\MultiLineString\MultiLineString;
+use Tcb\Geo\Point\Point;
+use Tcb\Geo\MultiPoint\MultiPoint;
+use Tcb\Geo\Polygon\Polygon;
+use Tcb\Geo\MultiPolygon\MultiPolygon;
 
-function is_assoc($arr)
-{
-  return array_keys($arr) !== range(0, count($arr) - 1);
-}
+use Tcb\ServerDate\ServerDate;
+use Tcb\RegExp\RegExp;
 
-function dataFormat($data)
+class Format
 {
-  function checkSpecial($data)
+
+  public static function checkSpecialClass($data)
+  {
+    if (!is_object($data)) {
+      return '';
+    }
+    if ($data instanceof Point || $data instanceof LineString || get_class($data) instanceof Polygon || get_class($data) instanceof MultiPoint || get_class($data) instanceof MultiLineString || get_class($data) instanceof MultiPolygon) {
+      return 'Geo';
+    }
+    if ($data instanceof RegExp) {
+      return 'regExp';
+    }
+    if ($data instanceof ServerDate) {
+      return 'serverDate';
+    }
+
+    return 'object';
+  }
+
+  public static function is_assoc($arr)
+  {
+    return array_keys($arr) !== range(0, count($arr) - 1);
+  }
+
+  public static function checkSpecial(&$data)
   {
     foreach ($data as $key => $item) {
-      if (checkSpecialClass($item) === 'Geo') {
+      if (self::checkSpecialClass($item) === 'Geo') {
         $data[$key] = $item->toJSON();
-      } else if (checkSpecialClass($item) === 'regExp') {
+      } else if (self::checkSpecialClass($item) === 'regExp') {
         $data[$key] = $item->parse();
-      } else if (checkSpecialClass($item) === 'serverDate') {
+      } else if (self::checkSpecialClass($item) === 'serverDate') {
         $data[$key] = $item->parse();
-      } else if (is_array($item) && is_assoc($item)) { // todo 检查是否为关联数组
-        checkSpecial($item);
+      } else if (self::checkSpecialClass($item) === 'object') { } else if (is_array($item) && self::is_assoc($item)) { // todo 检查是否为关联数组
+        self::checkSpecial($item);
       }
     }
   }
-  checkSpecial($data);
-  return $data;
+
+
+  public static function dataFormat($data)
+  {
+
+    self::checkSpecial($data);
+    return $data;
+  }
 }

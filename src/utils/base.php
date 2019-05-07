@@ -77,7 +77,7 @@ class TcbBase
   ])
   {
     //
-    $config = isEmpty($args['config']) ? $this->config : $args['config'];
+    $config = empty($args['config']) ? $this->config : $args['config'];
     $protocol = "https";
     $pathname = "/admin";
     // $config['secretId'] = $this->config['secretId'];
@@ -85,14 +85,15 @@ class TcbBase
     // $action = $args['action'];
     $params = $args['params'];
 
+    $defaultTimeout = 15;
     $paramsAdd = array('timestamp' => self::getMilTimeseconds(), 'eventId' => self::getEventId());
 
-    if (array_key_exists('envName', $this->config)) {
-      // $config['envName'] = $this->config['envName'];
-      $paramsAdd['envName'] = $this->config['envName'];
+    if (array_key_exists('envName', $config)) {
+      // $config['envName'] = $config['envName'];
+      $paramsAdd['envName'] = $config['envName'];
     }
-    if (array_key_exists('isHttp', $this->config)) {
-      $protocol = $this->config['isHttp'] ? 'http' : 'https';
+    if (array_key_exists('isHttp', $config)) {
+      $protocol = $config['isHttp'] ? 'http' : 'https';
     }
     //
     $method = $args['method'] ? $args['method'] : 'get';
@@ -120,8 +121,8 @@ class TcbBase
     // $params ?key????
     ksort($params);
     $authObj = array(
-      'SecretId' => $this->config['secretId'],
-      'SecretKey' => $this->config['secretKey'],
+      'SecretId' => $config['secretId'],
+      'SecretKey' => $config['secretKey'],
       'Method' => $method,
       'pathname' => $pathname,
       'Query' => $params,
@@ -141,8 +142,8 @@ class TcbBase
       $params['requestData'] = $requestData;
     }
 
-    if (array_key_exists('sessionToken', $this->config) && $this->config['sessionToken']) {
-      $params['sessionToken'] = $this->config['sessionToken'];
+    if (array_key_exists('sessionToken', $config) && $config['sessionToken']) {
+      $params['sessionToken'] = $config['sessionToken'];
     }
 
     $params['sdk_version'] = '1.5.0-beta.1'; // todo 
@@ -178,9 +179,26 @@ class TcbBase
 
     // $opts = array_merge($opts, array('method' => $method, 'headers' => $authObj['Headers']));
 
-    // ?????????
-    // storage.uploadFile  post(????json)  get
+
+    // database??? ?config.transMidData ?true
+    $service = explode('.', $params['action'])[0];
+    if ($service === 'database' && isset($config['databaseMidTran']) && $config['databaseMidTran'] === true) {
+      $params['databaseMidTran'] = true;
+      $params['databaseVersion'] = $config['databaseVersion'];
+    }
+
     $opts = array();
+
+    $opts['timeout'] = $defaultTimeout;
+    if (isset($config['timeout'])) {
+      $opts['timeout'] = $config['timeout'] ? $config['timeout'] : $defaultTimeout;
+    }
+
+    if (isset($args['timeout'])) {
+      $opts['timeout'] = $args['timeout'] ? $args['timeout'] : $opts['timeout'];
+    }
+
+
     if ($params['action'] === 'storage.uploadFile') {
       // multipart ??????
       $opts = array('headers' => $authObj['Headers'], 'multipart' => self::multiPartDataTran($params));
@@ -190,8 +208,15 @@ class TcbBase
       }
     }
 
+    if (isset($config['proxy'])) {
+      $opts['proxy'] = $config['proxy'];
+    }
+
     // guzzlehttp 构造请求
     $url = "http://localhost:8002";
+    // $url = "http://118.126.68.63";
+    // $opts['proxy'] = "http://web-proxy.tencent.com:8080";
+
     // $uri = "/admin";
 
     $http_client = new HttpClient(["base_uri" => $url]);

@@ -8,16 +8,16 @@ class UpdateCommand
   // public $operator;
   // public $operands;
   // public $_internalType = INTERNAL_TYPE["UPDATE_COMMAND"];
-  private $actions = array();
+  public $_actions = array();
 
-  public function __construct($actions, $step)
+  public function __construct($_actions, $step)
   {
-    $this->actions = array();
-    if (gettype($actions) === 'array' && count($actions) > 0) {
-      $this->actions = $actions;
+    $this->_actions = array();
+    if (gettype($_actions) === 'array' && count($_actions) > 0) {
+      $this->_actions = $_actions;
     }
     if (gettype($step) === 'array' && count($step) > 0) {
-      array_push($this->actions, $step);
+      array_push($this->_actions, $step);
     }
     // $this->operator = $operator;
     // $this->operands = $operands;

@@ -4,105 +4,106 @@
 
 class LogicCommand
 {
-    // public $fieldName;
-    // public $operator;
-    // public $operands;
-    // public $_internalType = INTERNAL_TYPE["LOGIC_COMMAND"];
+  // public $fieldName;
+  // public $operator;
+  // public $operands;
+  // public $_internalType = INTERNAL_TYPE["LOGIC_COMMAND"];
 
-    private $actions = array();
+  public $_actions = array();
 
-
-    function __construct($actions, $step)
-    {
-        $this->actions = array();
-        if (gettype($actions) === 'array' && count($actions) > 0) {
-            $this->actions = $actions;
-        }
-        if (gettype($step) === 'array' && count($step) > 0) {
-            array_push($this->actions, $step);
-        }
+  function __construct($_actions, $step)
+  {
+    $this->_actions = array();
+    if (gettype($_actions) === 'array' && count($_actions) > 0) {
+      $this->_actions = $_actions;
     }
-
-    public function or()
-    {
-        $arguments = func_get_args();
-        /**
-         * or 操作符的参数可能是 逻辑操作对象/逻辑操作对象数组
-         * _.or([_.gt(10), _.lt(100)])
-         */
-        if (gettype($arguments[0]) === 'array') {
-            $arguments = $arguments[0];
-        }
-        return new LogicCommand($this->actions, array_unshift($arguments, '$or'));
+    if (gettype($step) === 'array' && count($step) > 0) {
+      array_push($this->_actions, $step);
     }
+  }
 
-    public function and()
-    {
-        $arguments = func_get_args();
-        /**
-         * or 操作符的参数可能是 逻辑操作对象/逻辑操作对象数组
-         * _.or([_.gt(10), _.lt(100)])
-         */
-        if (gettype($arguments[0]) === 'array') {
-            $arguments = $arguments[0];
-        }
-        return new LogicCommand($this->actions, array_unshift($arguments, '$and'));
+  public function or()
+  {
+    $arguments = func_get_args();
+    /**
+     * or 操作符的参数可能是 逻辑操作对象/逻辑操作对象数组
+     * _.or([_.gt(10), _.lt(100)])
+     */
+    if (gettype($arguments[0]) === 'array') {
+      $arguments = $arguments[0];
     }
-    // function __construct($operator, $operands = [], $fieldName)
-    // {
+    array_unshift($arguments, '$or');
+    return new LogicCommand($this->_actions, $arguments);
+  }
 
-    //     $this->operator = $operator;
-    //     $this->operands = $operands;
-    //     $this->fieldName = isset($fieldName) ?  $fieldName : INTERNAL_TYPE["UNSET_FIELD_NAME"];
+  public function and()
+  {
+    $arguments = func_get_args();
+    /**
+     * or 操作符的参数可能是 逻辑操作对象/逻辑操作对象数组
+     * _.or([_.gt(10), _.lt(100)])
+     */
+    if (gettype($arguments[0]) === 'array') {
+      $arguments = $arguments[0];
+    }
+    array_unshift($arguments, '$and');
+    return new LogicCommand($this->_actions, $arguments);
+  }
+  // function __construct($operator, $operands = [], $fieldName)
+  // {
 
-    //     if ($this->fieldName !== INTERNAL_TYPE["UNSET_FIELD_NAME"]) {
+  //     $this->operator = $operator;
+  //     $this->operands = $operands;
+  //     $this->fieldName = isset($fieldName) ?  $fieldName : INTERNAL_TYPE["UNSET_FIELD_NAME"];
 
-    //         $this->operands = $operands;
-    //         $len = count($operands);
+  //     if ($this->fieldName !== INTERNAL_TYPE["UNSET_FIELD_NAME"]) {
 
-    //         for ($i = 0; $i < $len; $i++) {
-    //             $query = $operands[$i];
-    //             if (isLogicCommand(query) || isQueryCommand(query)) {
-    //                 $operands[i] = $query->_setFieldName($this->fieldName);
-    //             }
-    //         }
-    //     }
-    // }
+  //         $this->operands = $operands;
+  //         $len = count($operands);
 
-    // public static function isLogicCommand($object)
-    // {
-    //     return object && (object instanceof LogicCommand) && ($object->_internalType === INTERNAL_TYPE["LOGIC_COMMAND"]);
-    // }
+  //         for ($i = 0; $i < $len; $i++) {
+  //             $query = $operands[$i];
+  //             if (isLogicCommand(query) || isQueryCommand(query)) {
+  //                 $operands[i] = $query->_setFieldName($this->fieldName);
+  //             }
+  //         }
+  //     }
+  // }
 
-    // private function _setFieldName($fieldName)
-    // {
+  // public static function isLogicCommand($object)
+  // {
+  //     return object && (object instanceof LogicCommand) && ($object->_internalType === INTERNAL_TYPE["LOGIC_COMMAND"]);
+  // }
 
-    //     function loopOperands($operand)
-    //     {
-    //         if ($operand instanceof LogicCommand) {
-    //             return $operand . _setFieldName($fieldName);
-    //         } else {
-    //             return $operand;
-    //         }
-    //     }
+  // private function _setFieldName($fieldName)
+  // {
 
-    //     $operands = array_map('loopOperands', $this->operands);
+  //     function loopOperands($operand)
+  //     {
+  //         if ($operand instanceof LogicCommand) {
+  //             return $operand . _setFieldName($fieldName);
+  //         } else {
+  //             return $operand;
+  //         }
+  //     }
 
-    //     $command = new LogicCommand($this->operator, $operands, $fieldName);
-    //     return $command;
-    // }
+  //     $operands = array_map('loopOperands', $this->operands);
 
-    // public function and()
-    // {
-    //     $expressions = is_array($argv[0]) ? $argv[0] : $argv;
-    //     $expressions = array_unshift($expressions, $this);
-    //     return new LogicCommand(LOGIC_COMMANDS_LITERAL[O_AND], $expressions, $this->fieldName);
-    // }
+  //     $command = new LogicCommand($this->operator, $operands, $fieldName);
+  //     return $command;
+  // }
 
-    // public function or()
-    // {
-    //     $expressions = is_array($argv[0]) ? $argv[0] : $argv;
-    //     $expressions = array_unshift($expressions, $this);
-    //     return new LogicCommand(LOGIC_COMMANDS_LITERAL[O_OR], $expressions, $this->fieldName);
-    // }
+  // public function and()
+  // {
+  //     $expressions = is_array($argv[0]) ? $argv[0] : $argv;
+  //     $expressions = array_unshift($expressions, $this);
+  //     return new LogicCommand(LOGIC_COMMANDS_LITERAL[O_AND], $expressions, $this->fieldName);
+  // }
+
+  // public function or()
+  // {
+  //     $expressions = is_array($argv[0]) ? $argv[0] : $argv;
+  //     $expressions = array_unshift($expressions, $this);
+  //     return new LogicCommand(LOGIC_COMMANDS_LITERAL[O_OR], $expressions, $this->fieldName);
+  // }
 }
