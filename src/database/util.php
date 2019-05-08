@@ -127,14 +127,14 @@ class Util
           }, $value['coordinates']));
           break;
         case FieldType["Timestamp"]:
-          $realVal = $value->getTimestamp() * 1000; // getTimestamp是否能调
+          $realVal = $value['$timestamp'] * 1000; // getTimestamp是否能调
           break;
         case FieldType["Object"]:
         case FieldType["Array"]:
           $realVal = self::formatField($value);
           break;
         case FieldType["ServerDate"]:
-          $realVal = new Date($value['$date']);
+          $realVal = $value['$date']; // 直接返回时间戳？
           break;
         default:
           $realVal = $value;
@@ -290,7 +290,9 @@ class Util
     $chars = "ABCDEFabcdef0123456789";
     $autoId = "";
     for ($i = 0; $i < 24; $i++) {
-      $autoId += $chars[(rand(0, strlen($chars)))];
+      $index = rand(0, strlen($chars));
+      $test = substr($chars, $index, 1);
+      $autoId = $autoId . $test;
     }
     return $autoId;
   }

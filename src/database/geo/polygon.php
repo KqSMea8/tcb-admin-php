@@ -15,83 +15,87 @@ use Tcb\Geo\LineString\LineString;
  */
 class Polygon
 {
-    /**
-     * 多个point
-     * 
-     */
-    public $lines = [];
+  /**
+   * 多个point
+   * 
+   */
+  public $lines = [];
 
-    /**
-     * 初始化
-     *
-     * @param [Integer] $longitude
-     * @param [Integer] $latitude
-     */
-    function __construct(array $lines)
-    {
-        if (gettype($lines) !== 'array') {
-            throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($lines));
-        }
-
-        if (count($lines) === 0) {
-            throw new TcbException(INVALID_PARAM, 'Polygon must contain 1 linestring at least');
-        }
-
-        foreach ($lines as $line) {
-            if (get_class($line) !== 'LineString') {
-                throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($line));
-            }
-            if (LineString::isClosed($line)) {
-
-                $readbleStr = array_map(function ($item) {
-                    return $item->toReadableString();
-                }, $line->points);
-
-                throw new TcbException(INVALID_PARAM, 'LineString ' . $readbleStr . ' is not a closed cycle');
-            }
-        }
-
-        $this->lines = $lines;
+  /**
+   * 初始化
+   *
+   * @param [Integer] $longitude
+   * @param [Integer] $latitude
+   */
+  function __construct(array $lines)
+  {
+    if (gettype($lines) !== 'array') {
+      throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($lines));
     }
 
-    public function toJSON()
-    {
-        return array('type' => 'Polygon', 'coordinates' => array_map(function ($item) {
-            return array_map(function ($item) {
-                return array($item['longitude'], $item['latitude']);
-            }, $item->points);
-        }, $this->lines));
+    if (count($lines) === 0) {
+      throw new TcbException(INVALID_PARAM, 'Polygon must contain 1 linestring at least');
     }
 
+    foreach ($lines as $line) {
+      if (get_class($line) !== 'LineString') {
+        throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($line));
+      }
+      if (LineString::isClosed($line)) {
 
-    public static function validate($polygon)
-    {
-        if ((array_key_exists('type', $polygon) && $polygon['type'] !== 'Polygon') || (array_key_exists('coordinates', $polygon) && gettype($polygon['coordinates']) !== 'array')) {
-            return false;
-        }
+        $readbleStr = array_map(function ($item) {
+          return $item->toReadableString();
+        }, $line->points);
 
-        foreach ($polygon['coordinates'] as $line) {
-            if (!self::isCloseLineString(($line))) {
-                return false;
-            }
-
-            foreach ($line as $point) {
-                if (!is_numeric($point[0]) || !is_numeric($point[1])) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        throw new TcbException(INVALID_PARAM, 'LineString ' . $readbleStr . ' is not a closed cycle');
+      }
     }
 
-    public static function isCloseLineString($lineString)
-    {
-        $firstPoint = $lineString[0];
-        $lastPoint = $lineString[count($lineString) - 1];
+    $this->lines = $lines;
+  }
 
-        if ($firstPoint[0] !== $lastPoint[0] || $firstPoint[1] !== $lastPoint[1]) {
-            return false;
-        }
-        return true;
+  public function toJSON()
+  {
+    return array('type' => 'Polygon', 'coordinates' => array_map(function ($item) {
+      return array_map(function ($item) {
+        return array($item['longitude'], $item['latitude']);
+      }, $item->points);
+    }, $this->lines));
+  }
+
+
+  public static function validate($polygon)
+  {
+    if (!isset($polygon['type']) || !isset($polygon['coordinates'])) {
+      return false;
     }
+
+    if ($polygon['type'] !== 'Polygon' || gettype($polygon['coordinates']) !== 'array') {
+      return false;
+    }
+
+    foreach ($polygon['coordinates'] as $line) {
+      if (!self::isCloseLineString(($line))) {
+        return false;
+      }
+
+      foreach ($line as $point) {
+        if (!is_numeric($point[0]) || !is_numeric($point[1])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public static function isCloseLineString($lineString)
+  {
+    $firstPoint = $lineString[0];
+    $lastPoint = $lineString[count($lineString) - 1];
+
+    if ($firstPoint[0] !== $lastPoint[0] || $firstPoint[1] !== $lastPoint[1]) {
+      return false;
+    }
+    return true;
+  }
 }

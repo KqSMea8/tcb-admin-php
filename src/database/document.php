@@ -9,7 +9,8 @@ require_once "src/database/utils/promiseCallback.php";
 
 // use function Tcb\DataFormat\dataFormat;
 use function Tcb\PromiseCallback\createPromiseCallback;
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
+use Tcb\Util\Util;
 
 class DocumentReference
 {
@@ -115,7 +116,7 @@ class DocumentReference
       throw new TcbException(INVALID_PARAM, "参数必需是非空对象");
     }
 
-    if (!array_key_exists("_id", $data)) {
+    if (array_key_exists("_id", $data)) {
       throw new TcbException(INVALID_PARAM, "不能更新_id的值");
     }
 
@@ -136,11 +137,11 @@ class DocumentReference
     checkMixed($data);
 
     // 不能包含操作符
-    if (hasOperator) {
+    if ($hasOperator) {
       throw new TcbException(DATABASE_REQUEST_FAILED, "update operator complicit");
     }
 
-    $args = [];
+    // $args = [];
     // $args["action"] = "database.updateDocument";
     $params = [
       "collectionName" => $this->_coll,
@@ -162,7 +163,7 @@ class DocumentReference
     } else {
       $result = [
         "updated" => $res["data"]["updated"],
-        "upsertId" => $res["data"]["upsert_id"],
+        "upsertedId" => $res["data"]["upserted_id"],
         "requestId" => $res["requestId"],
       ];
       return $result;

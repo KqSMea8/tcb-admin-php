@@ -46,8 +46,10 @@ class Format
         $data[$key] = $item->parse();
       } else if (self::checkSpecialClass($item) === 'serverDate') {
         $data[$key] = $item->parse();
-      } else if (self::checkSpecialClass($item) === 'object') { } else if (is_array($item) && self::is_assoc($item)) { // todo 检查是否为关联数组
-        self::checkSpecial($item);
+      }
+      // else if (self::checkSpecialClass($item) === 'object') { } 
+      else if (is_array($item) && self::is_assoc($item)) { // todo 检查是否为关联数组
+        self::checkSpecial($data[$key]);
       }
     }
   }

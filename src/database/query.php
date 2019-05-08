@@ -12,6 +12,7 @@ require_once "src/database/utils/dataFormat.php";
 
 use Tcb\TcbException;
 use Tcb\Util\Util;
+use Tcb\Validate\Validate;
 // use function Tcb\DataFormat\dataFormat;
 
 class Query
@@ -233,7 +234,7 @@ class Query
     Validate::isInteger("limit", $limit);
 
     $option = $this->_queryOptions;
-    $option["limit"] = limit;
+    $option["limit"] = $limit;
 
     return new Query(
       $this->_db,
@@ -301,7 +302,7 @@ class Query
     } else {
       $result = [
         "updated" => $res["data"]["updated"],
-        "upsertId" => $res["data"]["upsert_id"],
+        "upserted_id" => $res["data"]["upserted_id"],
         "requestId" => $res["requestId"],
       ];
 
@@ -315,7 +316,7 @@ class Query
    * @param [Array] $projection
    * @return Query
    */
-  public function field(object $projection)
+  public function field(array $projection)
   {
     foreach ($projection as $k => $v) {
       if ($projection[$k]) {

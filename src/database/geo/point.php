@@ -51,7 +51,12 @@ class Point
 
   public static function validate($point)
   {
-    if (array_key_exists('type', $point) && $point['type'] === 'Point' && array_key_exists('coordinates', $point) && gettype($point['coordinates']) === 'array') {
+
+    if (!isset($point['type']) || !isset($point['coordinates'])) {
+      return false;
+    }
+
+    if ($point['type'] === 'Point' && gettype($point['coordinates']) === 'array') {
       if (
         Validate::isGeopoint("latitude", $point['coordinates'][0]) &&
         Validate::isGeopoint("longitude", $point['coordinates'][1])
