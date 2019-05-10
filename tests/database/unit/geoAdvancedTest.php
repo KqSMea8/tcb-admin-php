@@ -129,204 +129,204 @@ class GeoAdvancedTest extends TestCase
 
     self::$initialData = $initialData;
 
-    //   // create
-    //   $result = self::$collection->add($initialData);
-    //   $this->assertEquals(isset($result['id']) && isset($result['requestId']), true);
+    // create
+    $result = self::$collection->add($initialData);
+    $this->assertEquals(isset($result['id']) && isset($result['requestId']), true);
 
-    //   // read
-    //   $res = self::$collection->where(['_id' => $result['id']])->get();
-    //   $this->assertEquals(count($res['data']) > 0, true);
+    // read
+    $res = self::$collection->where(['_id' => $result['id']])->get();
+    $this->assertEquals(count($res['data']) > 0, true);
 
-    //   $data = $res['data'][0];
-    //   $this->assertEquals($data['point'] instanceof Point, true);
-    //   $this->assertEquals($data['line'] instanceof LineString, true);
-    //   $this->assertEquals($data['polygon'] instanceof Polygon, true);
-    //   $this->assertEquals($data['multiPoint'] instanceof MultiPoint, true);
-    //   $this->assertEquals($data['multiLineString'] instanceof MultiLineString, true);
-    //   $this->assertEquals($data['multiPolygon'] instanceof MultiPolygon, true);
+    $data = $res['data'][0];
+    $this->assertEquals($data['point'] instanceof Point, true);
+    $this->assertEquals($data['line'] instanceof LineString, true);
+    $this->assertEquals($data['polygon'] instanceof Polygon, true);
+    $this->assertEquals($data['multiPoint'] instanceof MultiPoint, true);
+    $this->assertEquals($data['multiLineString'] instanceof MultiLineString, true);
+    $this->assertEquals($data['multiPolygon'] instanceof MultiPolygon, true);
 
-    //   $this->assertEquals($data['point'], $initialData['point']);
-    //   $this->assertEquals($data['line'], $line);
-    //   $this->assertEquals($data['polygon'], $polygon);
-    //   $this->assertEquals($data['multiPoint'], $multiPoint);
-    //   $this->assertEquals($data['multiLineString'], $multiLineString);
-    //   $this->assertEquals($data['multiPolygon'], $multiPolygon);
+    $this->assertEquals($data['point'], $initialData['point']);
+    $this->assertEquals($data['line'], $line);
+    $this->assertEquals($data['polygon'], $polygon);
+    $this->assertEquals($data['multiPoint'], $multiPoint);
+    $this->assertEquals($data['multiLineString'], $multiLineString);
+    $this->assertEquals($data['multiPolygon'], $multiPolygon);
 
-    //   // update
-    //   $res = self::$collection->doc($result['id'])->set($initialData);
-    //   $this->assertEquals($res['updated'], 1);
-    //   $this->assertEquals(isset($res['requestId']), true);
+    // update
+    $res = self::$collection->doc($result['id'])->set($initialData);
+    $this->assertEquals($res['updated'], 1);
+    $this->assertEquals(isset($res['requestId']), true);
 
-    //   //delete
-    //   $deleteRes = self::$collection->where(['_id' => $result['id']])->remove();
-    //   $this->assertEquals($deleteRes['deleted'], 1);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadPoint1()
-    // {
-    //   self::$db->Point();
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadPoint2()
-    // {
-    //   self::$db->Point([], []);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadLineString1()
-    // {
-    //   self::$db->LineString([]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadLineString2()
-    // {
-    //   self::$db->LineString([123, []]);
-    // }
-
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Throwable 
-    //  */
-    // public static function testBadPolygon1()
-    // {
-    //   self::$db->Polygon(null);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadPolygon2()
-    // {
-    //   self::$db->Polygon([]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadPolygon3()
-    // {
-    //   self::$db->Polygon([666, 789]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadPolygon4()
-    // {
-    //   // 回字外环
-    //   $point1 = self::$point1;
-    //   $point2 = self::$point2;
-    //   $point3 = self::$point3;
-    //   $point4 = self::$point4;
-
-    //   // 回字内环
-    //   $point5 = self::$point5;
-    //   $point6 = self::$point6;
-    //   $point7 = self::$point7;
-
-    //   $point8 = self::$point8;
-    //   $lineString = self::$db->LineString([$point1, $point2, $point3, $point4, $point8]);
-    //   self::$db->Polygon([$lineString]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiPoint1()
-    // {
-    //   self::$db->MultiPoint([]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiPoint2()
-    // {
-    //   self::$db->MultiPoint([[], []]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiLineString1()
-    // {
-    //   self::$db->MultiLineString([]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiLineString2()
-    // {
-    //   self::$db->MultiLineString([123, null]);
-    // }
-
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Throwable
-    //  */
-    // public static function testBadMultiPolygon1()
-    // {
-    //   self::$db->MultiPolygon(123);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiPolygon2()
-    // {
-    //   self::$db->MultiPolygon([]);
-    // }
-
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @expectedException Tcb\TcbException\TcbException
-    //  */
-    // public static function testBadMultiPolygon3()
-    // {
-    //   self::$db->MultiPolygon([666, 666]);
-    // }
+    //delete
+    $deleteRes = self::$collection->where(['_id' => $result['id']])->remove();
+    $this->assertEquals($deleteRes['deleted'], 1);
   }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadPoint1()
+  // {
+  //   self::$db->Point();
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadPoint2()
+  // {
+  //   self::$db->Point([], []);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadLineString1()
+  // {
+  //   self::$db->LineString([]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadLineString2()
+  // {
+  //   self::$db->LineString([123, []]);
+  // }
+
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Throwable 
+  //  */
+  // public static function testBadPolygon1()
+  // {
+  //   self::$db->Polygon(null);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadPolygon2()
+  // {
+  //   self::$db->Polygon([]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadPolygon3()
+  // {
+  //   self::$db->Polygon([666, 789]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadPolygon4()
+  // {
+  //   // 回字外环
+  //   $point1 = self::$point1;
+  //   $point2 = self::$point2;
+  //   $point3 = self::$point3;
+  //   $point4 = self::$point4;
+
+  //   // 回字内环
+  //   $point5 = self::$point5;
+  //   $point6 = self::$point6;
+  //   $point7 = self::$point7;
+
+  //   $point8 = self::$point8;
+  //   $lineString = self::$db->LineString([$point1, $point2, $point3, $point4, $point8]);
+  //   self::$db->Polygon([$lineString]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiPoint1()
+  // {
+  //   self::$db->MultiPoint([]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiPoint2()
+  // {
+  //   self::$db->MultiPoint([[], []]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiLineString1()
+  // {
+  //   self::$db->MultiLineString([]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiLineString2()
+  // {
+  //   self::$db->MultiLineString([123, null]);
+  // }
+
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Throwable
+  //  */
+  // public static function testBadMultiPolygon1()
+  // {
+  //   self::$db->MultiPolygon(123);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiPolygon2()
+  // {
+  //   self::$db->MultiPolygon([]);
+  // }
+
+  // /**
+  //  * Undocumented function
+  //  *
+  //  * @expectedException Tcb\TcbException\TcbException
+  //  */
+  // public static function testBadMultiPolygon3()
+  // {
+  //   self::$db->MultiPolygon([666, 666]);
+  // }
+
 
   public function testGeoNear()
   {
@@ -337,9 +337,8 @@ class GeoAdvancedTest extends TestCase
 
     // read
     $readRes = self::$collection->where(['point' => self::$_->geoNear(['geometry' => $geoPoint, 'maxDistance' => 1, 'minDistance' => 0])])->get();
-    $testResult = self::$collection->get();
-    $this->assertEquals(count($readRes['data']) > 0, true);
-    $this->assertEquals($readRes['data'][0]['point'], $geoPoint);
+    $this->assertEquals(count($readRes['data']) > 0, true); // 待预发验证
+    $this->assertEquals($readRes['data'][0]['point'], $geoPoint); // 待预发验证
 
     // delete
     $deleteRes = self::$collection->where(['_id' => $res['id']])->remove();
@@ -362,11 +361,11 @@ class GeoAdvancedTest extends TestCase
 
     // read
     $readRes = self::$collection->where(['point' => self::$_->geoWithin(['geometry' => self::$db->Polygon([self::$db->LineString([$point1, $point2, $point3, $point4, $point1])])])])->get();
-    $this->assertEquals(count($readRes['data']) > 0, true);
-    $this->assertEquals($readRes['data'][0]['point'], $geoPoint);
+    $this->assertEquals(count($readRes['data']) > 0, true); // 待预发验证
+    $this->assertEquals($readRes['data'][0]['point'], $geoPoint); // 待预发验证
     // delete
 
     $deleteRes = self::$collection->where(['point' => self::$_->geoWithin(['geometry' => self::$db->Polygon([self::$db->LineString([$point1, $point2, $point3, $point4, $point1])])])])->remove();
-    $this->assertEquals($deleteRes['deleted'] >= 1, true);
+    $this->assertEquals($deleteRes['deleted'] >= 1, true); // 待预发验证
   }
 }

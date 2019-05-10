@@ -15,8 +15,8 @@ class RegExp
     if (empty($opts['regexp'])) {
       throw new TcbException(INVALID_PARAM, 'regexp must be a string');
     }
-    $this->regex = $opts['regexp'];
-    $this->options = $opts['options'];
+    $this->regex = isset($opts['regexp']) ? $opts['regexp'] : '';
+    $this->options = isset($opts['options']) ? $opts['options'] : '';
   }
 
   public function parse()

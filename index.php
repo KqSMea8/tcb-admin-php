@@ -14,7 +14,9 @@ class TCB
     'sessionToken' => null,
     'env' => null,
     'isHttp' => null,
-    'proxy' => null
+    'proxy' => null,
+    'timeout' => null,
+    
   ])
   {
     $this->config = [];

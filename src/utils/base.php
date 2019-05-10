@@ -232,8 +232,8 @@ class TcbBase
 
     // guzzlehttp 构造请求
     $url = "http://localhost:8002";
-    $url = "http://118.126.68.63";
-    $opts['proxy'] = "http://web-proxy.tencent.com:8080";
+    // $url = "http://118.126.68.63";
+    // $opts['proxy'] = "http://web-proxy.tencent.com:8080";
 
     // $uri = "/admin";
 

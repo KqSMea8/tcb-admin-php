@@ -76,8 +76,6 @@ class DocumentReference
    */
   public function create($data)
   {
-    $callback = createPromiseCallback();
-
     $data = Format::dataFormat($data);
 
     $params = array();
@@ -88,20 +86,6 @@ class DocumentReference
     if (isset($this->id)) {
       $params['_id'] = $this->id;
     }
-
-    // $args["action"] = "database.addDocument";
-
-    // $data = Util::encodeDocumentDataForReq($data, false, false);
-    // var_dump($data);
-
-    // $args["params"] = [
-    //     "collectionName" => $this->_coll,
-    //     "data" => json_encode($data),
-    // ];
-
-    // if ($this->id) {
-    //     $args["params"]["Id"] = $this->id;
-    // }
 
     $res = $this->request->sendMidData('database.addDocument', $params);
     if (isset($res["code"]) && $res['code']) {

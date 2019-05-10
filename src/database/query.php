@@ -123,6 +123,8 @@ class Query
       $params["projection"] = $this->_queryOptions["projection"];
     }
 
+    // dataFormat 处理
+
     $res = $this->_request->sendMidData('database.queryDocument', $params);
 
     if (isset($res["code"])) {
@@ -212,13 +214,14 @@ class Query
       "direction" => $directionStr,
     ];
 
-    $combinedOrders = array_merge($this->_fieldOrders, $newOrder);
+    array_push($this->_fieldOrders, $newOrder);
+    // $combinedOrders = array_merge($this->_fieldOrders, $newOrder);
 
     return new Query(
       $this->_db,
       $this->_coll,
       $this->_fieldFilters,
-      $combinedOrders,
+      $this->_fieldOrders,
       $this->_queryOptions
     );
   }

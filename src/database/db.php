@@ -6,7 +6,7 @@ require_once "src/database/command.php";
 require_once "src/database/regexp/index.php";
 require_once "src/database/serverDate/index.php";
 
-// require_once 'src/consts/code.php';
+require_once 'src/consts/code.php';
 require_once 'src/utils/dbRequest.php';
 require_once 'src/database/utils/dataFormat.php';
 

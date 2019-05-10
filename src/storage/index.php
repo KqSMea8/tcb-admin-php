@@ -166,7 +166,7 @@ class TcbStorage extends TcbBase
 
     $tmpUrlRes = $this->getTempFileURL([
       "fileList" => [
-        ["fileID" => "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg", "maxAge" => 100000]
+        ["fileID" => $fileID, "maxAge" => 100000]
       ]
     ]);
 

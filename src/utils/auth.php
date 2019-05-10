@@ -54,7 +54,7 @@ class Auth
     foreach ($obj as $key => $value) {
       $val = $value === null ? "" : $value;
       if (!is_string($val)) {
-        $val = json_encode($val); // json_encode 会将/ 转为\/
+        $val = json_encode($val, JSON_UNESCAPED_UNICODE); // json_encode 会将/ 转为\/
         $val = str_replace("\\/", "/", $val);
       }
       $key = self::encodeUriStr(strtolower($key));

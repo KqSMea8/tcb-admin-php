@@ -12,7 +12,7 @@ class StorageTest extends TestCase
   public static function setUpBeforeClass()
   {
     global $TcbConfig;
-    $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq", "env" => "tcbenv-mPIgjhnq");
+    $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq");
     self::$tcb = new Tcb($TcbConfig);
   }
 
@@ -68,11 +68,11 @@ class StorageTest extends TestCase
     try {
       $storage = self::$tcb->getStorage();
       $result = $storage->downloadFile([
-        "fileID" => "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg",
-        "tempFilePath" => "./tests/1.jpg"
+        "fileID" => "cloud://jimmytest-088bef.jimmytest-088bef-1251059088/a|b.jpeg",
+        "tempFilePath" => "./tests/2.jpg"
       ]);
       $this->assertEquals(is_string($result["requestId"]), 1);
-      file_exists('./tests/1.jpg');
+      file_exists('./tests/2.jpg');
     } catch (Exception $e) {
       $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
       echo $code;

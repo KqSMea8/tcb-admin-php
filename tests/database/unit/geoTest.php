@@ -59,7 +59,7 @@ class GeoTest extends TestCase
       'point' => $point,
       'pointArr' => [$point, $point, $point],
       'uuid' => '416a4700-e0d3-11e8-911a-8888888888',
-      'string' => 'test',
+      'string' => '新增单个string字段1。新增单个string字段1。fsdfsafsd',
       'due' => $date,
       'int' => 100,
       'geo' => self::$db->Point(90, 23),
