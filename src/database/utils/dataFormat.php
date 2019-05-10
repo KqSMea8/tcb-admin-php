@@ -19,7 +19,7 @@ class Format
     if (!is_object($data)) {
       return '';
     }
-    if ($data instanceof Point || $data instanceof LineString || get_class($data) instanceof Polygon || get_class($data) instanceof MultiPoint || get_class($data) instanceof MultiLineString || get_class($data) instanceof MultiPolygon) {
+    if ($data instanceof Point || $data instanceof LineString || $data instanceof Polygon || $data instanceof MultiPoint || $data instanceof MultiLineString || $data instanceof MultiPolygon) {
       return 'Geo';
     }
     if ($data instanceof RegExp) {
@@ -48,7 +48,7 @@ class Format
         $data[$key] = $item->parse();
       }
       // else if (self::checkSpecialClass($item) === 'object') { } 
-      else if (is_array($item) && self::is_assoc($item)) { // todo 检查是否为关联数组
+      else if (is_array($item)) { // todo 检查是否为数组, 关联数组与索引数组均检查
         self::checkSpecial($data[$key]);
       }
     }

@@ -7,7 +7,8 @@ require_once "src/database/util.php";
 require_once "src/consts/code.php";
 
 
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
+use Tcb\Geo\Polygon\Polygon;
 
 /**
  * 地理位置
@@ -37,7 +38,7 @@ class MultiPolygon
     }
 
     foreach ($polygons as $polygon) {
-      if (get_class($polygon) !== 'Polygon') {
+      if (!($polygon instanceof Polygon)) {
         throw new TcbException(INVALID_PARAM, '"polygon" must be of type Polygon[]. Received type' . gettype($polygon));
       }
     }
@@ -50,7 +51,7 @@ class MultiPolygon
     return array('type' => 'MultiPolygon', 'coordinates' => array_map(function ($item) {
       return array_map(function ($item) {
         return array_map(function ($item) {
-          return array($item['longitude'], $item['latitude']);
+          return array($item->longitude, $item->latitude);
         }, $item->points);
       }, $item->lines);
     }, $this->polygons));

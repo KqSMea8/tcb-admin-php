@@ -30,7 +30,7 @@ use Tcb\RegExp\RegExp;
 
 // use Tcb\Collection\CollectionReference;
 // use Tcb\Command\Command;
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
 
 class Db
 {
@@ -68,7 +68,7 @@ class Db
    * 获取RegExp对象
    *
    */
-  public function Point($longitude, $latitude)
+  public function Point($longitude = null, $latitude = null)
   {
     return new Point($longitude, $latitude);
   }

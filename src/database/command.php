@@ -65,57 +65,105 @@ class Command
 
   public function geoNear($val)
   {
+    $isObject = is_object($val);
+    $isArray = is_array($val);
 
-    if (!($val->geometry instanceof Point)) {
+    if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
       throw new TcbException(
         INVALID_PARAM,
-        '"geometry" must be of type Point. Received type ' . get_class($val->geometry)
-      );
-    }
-    if (isset($val->maxDistance) && !is_numeric($val->maxDistance)) {
-      throw new TypeError(
-        '"maxDistance" must be of type Number. Received type"' . get_class($val->maxDistance)
-      );
-    }
-    if (isset($val->minDistance) && !is_numeric($val->minDistance)) {
-      throw new TypeError(
-        '"minDistance" must be of type Number. Received type' . get_class($val->minDistance)
+        '"val" must be of type array or object. Received type ' . gettype($val)
       );
     }
 
-    return new QueryCommand([], ['$geoNear', $val->geometry->toJSON()]);
+    $geometry = $isObject ? $val->geometry : $val['geometry'];
+    $maxDistance = $isObject ? $val->maxDistance : $val['maxDistance'];
+    $minDistance = $isObject ? $val->minDistance : $val['minDistance'];
+
+    if (!($geometry instanceof Point)) {
+      throw new TcbException(
+        INVALID_PARAM,
+        '"geometry" must be of type Point. Received type ' . gettype($geometry)
+      );
+    }
+    if ((isset($maxDistance) && !is_numeric($maxDistance))) {
+      throw new TypeError(
+        '"maxDistance" must be of type Number. Received type"' . gettype($maxDistance)
+      );
+    }
+    if ((isset($minDistance) && !is_numeric($minDistance))) {
+      throw new TypeError(
+        '"minDistance" must be of type Number. Received type' . gettype($minDistance)
+      );
+    }
+
+    $resultGeometry = [
+      'geometry' => $geometry->toJSON(),
+      'maxDistance' => $maxDistance,
+      'minDistance' => $minDistance
+    ];
+
+    return new QueryCommand([], ['$geoNear', $resultGeometry]);
   }
 
   public function geoWithin($val)
   {
+    $isObject = is_object($val);
+    $isArray = is_array($val);
+
+    if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
+      throw new TcbException(
+        INVALID_PARAM,
+        '"val" must be of type array or object. Received type ' . gettype($val)
+      );
+    }
+    $geometry = $isObject ? $val->geometry : $val['geometry'];
+
     if (
-      !($val->geometry instanceof MultiPolygon) &&
-      !($val->geometry instanceof Polygon)
+      !($geometry instanceof MultiPolygon) &&
+      !($geometry instanceof Polygon)
     ) {
       throw new TypeError(
-        '"geometry" must be of type Polygon or MultiPolygon. Received type' . get_class($val->geometry)
+        '"geometry" must be of type Polygon or MultiPolygon. Received type' . gettype($geometry)
       );
     }
 
-    return new QueryCommand([], ['$geoWithin', $val->geometry->toJSON()]);
+    $resultGeometry = [
+      'geometry' => $geometry->toJSON(),
+    ];
+    return new QueryCommand([], ['$geoWithin', $resultGeometry]);
   }
 
   public function geoIntersects($val)
   {
+    $isObject = is_object($val);
+    $isArray = is_array($val);
+
+    if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
+      throw new TcbException(
+        INVALID_PARAM,
+        '"val" must be of type array or object. Received type ' . gettype($val)
+      );
+    }
+    $geometry = $isObject ? $val->geometry : $val['geometry'];
+
     if (
-      !($val->geometry instanceof Point) &&
-      !($val->geometry instanceof LineString) &&
-      !($val->geometry instanceof Polygon) &&
-      !($val->geometry instanceof MultiPoint) &&
-      !($val->geometry instanceof MultiLineString) &&
-      !($val->geometry instanceof MultiPolygon)
+      !($geometry instanceof Point) &&
+      !($geometry instanceof LineString) &&
+      !($geometry instanceof Polygon) &&
+      !($geometry instanceof MultiPoint) &&
+      !($geometry instanceof MultiLineString) &&
+      !($geometry instanceof MultiPolygon)
     ) {
       throw new TypeError(
-        '"geometry" must be of type Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon. Received type ' . get_class($val->geometry)
+        '"geometry" must be of type Point, LineString, Polygon, MultiPoint, MultiLineString or MultiPolygon. Received type ' . gettype($geometry)
       );
     }
 
-    return new QueryCommand([], ['$geoIntersects', $val->geometry->toJSON()]);
+    $resultGeometry = [
+      'geometry' => $geometry->toJSON(),
+    ];
+
+    return new QueryCommand([], ['$geoIntersects', $resultGeometry]);
   }
 
   function  or()

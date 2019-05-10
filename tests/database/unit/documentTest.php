@@ -103,6 +103,8 @@ class DocumentTest extends TestCase
 
     $data = self::$collection->doc($docId)->update(['data' => ['arr' => self::$_->push([4, 5, 6]), 'foo' => self::$_->inc(1)], 'array' => self::$_->pop()]);
     $this->assertEquals($data['updated'], 1);
+
+    // $document = self::$collection->doc($docId)->get();
   }
 
   public function testRemoveNotExistDoc()

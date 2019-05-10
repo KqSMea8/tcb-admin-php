@@ -6,7 +6,8 @@ require_once "src/database/constants.php";
 require_once "src/database/util.php";
 require_once "src/consts/code.php";
 
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
+use Tcb\Geo\Point\Point;
 
 /**
  * 地理位置
@@ -36,8 +37,8 @@ class LineString
     }
 
     foreach ($points as $point) {
-      if (get_class($point) !== 'Point') {
-        throw new TcbException(INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points));
+      if (!($point instanceof Point)) {
+        throw new TcbException(INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points)); // 工具方法gettype
       }
     }
 

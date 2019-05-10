@@ -6,7 +6,8 @@ require_once "src/database/constants.php";
 require_once "src/database/util.php";
 require_once "src/consts/code.php";
 
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
+use Tcb\Geo\LineString\LineString;
 
 /**
  * 地理位置
@@ -36,7 +37,7 @@ class MultiLineString
     }
 
     foreach ($lines as $line) {
-      if (get_class($line) !== 'LineString') {
+      if (!($line instanceof LineString)) {
         throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($line));
       }
     }
@@ -48,7 +49,7 @@ class MultiLineString
   {
     return array('type' => 'MultiLineString', 'coordinates' => array_map(function ($item) {
       return array_map(function ($item) {
-        return array($item['longitude'], $item['latitude']);
+        return array($item->longitude, $item->latitude);
       }, $item->points);
     }, $this->lines));
   }

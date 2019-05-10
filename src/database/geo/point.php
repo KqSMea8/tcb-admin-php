@@ -58,8 +58,8 @@ class Point
 
     if ($point['type'] === 'Point' && gettype($point['coordinates']) === 'array') {
       if (
-        Validate::isGeopoint("latitude", $point['coordinates'][0]) &&
-        Validate::isGeopoint("longitude", $point['coordinates'][1])
+        Validate::isGeopoint("longitude", $point['coordinates'][0]) &&
+        Validate::isGeopoint("latitude", $point['coordinates'][1])
       ) {
         return true;
       }

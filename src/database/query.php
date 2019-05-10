@@ -10,7 +10,7 @@ require_once "src/database/utils/dataFormat.php";
 // require_once "src/database/serializer/query.php";
 // require_once "src/database/serializer/update.php";
 
-use Tcb\TcbException;
+use Tcb\TcbException\TcbException;
 use Tcb\Util\Util;
 use Tcb\Validate\Validate;
 // use function Tcb\DataFormat\dataFormat;

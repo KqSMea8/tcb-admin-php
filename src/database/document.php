@@ -45,6 +45,20 @@ class DocumentReference
 
   public $projection;
 
+  private static function checkOperatorMixed(array $arr)
+  {
+    if (is_array($arr)) {
+      foreach ($arr as $val) {
+        if ($val instanceof UpdateCommand) {
+          return true;
+        } elseif (is_array($val)) {
+          return self::checkOperatorMixed($val);
+        }
+      }
+    }
+    return false;
+  }
+
   public function __construct($db, $coll, $docID, $projection = null)
   {
     $this->_db = $db;
@@ -120,21 +134,12 @@ class DocumentReference
       throw new TcbException(INVALID_PARAM, "不能更新_id的值");
     }
 
-    // 检查操作符
-    $hasOperator = false;
-    function checkMixed($arr)
-    {
-      if (is_array($arr)) {
-        foreach ($arr as $val) {
-          if ($val instanceof UpdateCommand) {
-            $hasOperator = true;
-          } elseif (is_array($val)) {
-            checkMixed($val);
-          }
-        }
-      }
+    // 检查是否有docId
+    if (!isset($this->id)) {
+      throw new TcbException(INVALID_PARAM, "docId不能为空");
     }
-    checkMixed($data);
+
+    $hasOperator = self::checkOperatorMixed($data);
 
     // 不能包含操作符
     if ($hasOperator) {
@@ -182,7 +187,7 @@ class DocumentReference
       throw new TcbException(EMPTY_PARAM, "参数必需是非空对象");
     }
 
-    if (!array_key_exists("_id", $data)) {
+    if (array_key_exists("_id", $data)) {
       throw new TcbException(INVALID_PARAM, "不能更新 _id 的值");
     }
 
@@ -205,7 +210,7 @@ class DocumentReference
     } else {
       $result = [
         "updated" => $res["data"]["updated"],
-        "upsertId" => $res["data"]["upsert_id"],
+        "upsertedId" => $res["data"]["upserted_id"],
         "requestId" => $res["requestId"],
       ];
 

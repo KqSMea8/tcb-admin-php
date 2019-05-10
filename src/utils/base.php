@@ -55,6 +55,20 @@ class TcbBase
   }
 
   /**
+   * ??????????
+   * 
+   */
+  public static function sortArrayKey(&$arr)
+  {
+    if (is_array($arr)) {
+      ksort($arr);
+      foreach ($arr as $key => $value) {
+        self::sortArrayKey($arr[$key]);
+      }
+    }
+  }
+
+  /**
    * multipart data transfer
    */
 
@@ -212,10 +226,14 @@ class TcbBase
       $opts['proxy'] = $config['proxy'];
     }
 
+    // opts ???key???????????queryParams????
+    self::sortArrayKey($opts);
+
+
     // guzzlehttp 构造请求
     $url = "http://localhost:8002";
-    // $url = "http://118.126.68.63";
-    // $opts['proxy'] = "http://web-proxy.tencent.com:8080";
+    $url = "http://118.126.68.63";
+    $opts['proxy'] = "http://web-proxy.tencent.com:8080";
 
     // $uri = "/admin";
 
