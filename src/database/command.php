@@ -1,18 +1,20 @@
 <?php
-// namespace Tcb\Command;
+namespace TencentCloudBase\Database;
 
 require_once "src/database/constants.php";
-require_once "src/database/commands/logic.php";
-require_once "src/database/commands/query.php";
-require_once "src/database/commands/update.php";
 
-use Tcb\Geo\LineString\LineString;
-use Tcb\Geo\MultiLineString\MultiLineString;
-use Tcb\Geo\MultiPoint\MultiPoint;
-use Tcb\Geo\MultiPolygon\MultiPolygon;
-use Tcb\Geo\Point\Point;
-use Tcb\Geo\Polygon\Polygon;
-use Tcb\TcbException\TcbException;
+use TencentCloudBase\Database\Geo\LineString;
+use TencentCloudBase\Database\Geo\MultiLineString;
+use TencentCloudBase\Database\Geo\MultiPoint;
+use TencentCloudBase\Database\Geo\MultiPolygon;
+use TencentCloudBase\Database\Geo\Point;
+use TencentCloudBase\Database\Geo\Polygon;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Utils\Format;
+use TencentCloudBase\Database\Commands\LogicCommand;
+use TencentCloudBase\Database\Commands\QueryCommand;
+use TencentCloudBase\Database\Commands\UpdateCommand;
+use \TypeError;
 
 class Command
 {

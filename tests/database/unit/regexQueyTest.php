@@ -1,7 +1,7 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
+use TencentCloudBase\TCB;
 use PHPUnit\Framework\TestCase;
 
 class RegexQueryTest extends TestCase

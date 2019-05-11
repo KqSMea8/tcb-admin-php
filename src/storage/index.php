@@ -1,8 +1,11 @@
 <?php
-require_once 'src/utils/base.php';
+namespace TencentCloudBase\Storage;
+
 require_once 'src/consts/code.php';
 
-use Tcb\TcbException\TcbException;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Utils\TcbBase;
+use \Exception;
 
 class TcbStorage extends TcbBase
 {

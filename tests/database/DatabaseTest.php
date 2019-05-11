@@ -1,8 +1,8 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
+use TencentCloudBase\TCB;
 
 class DatabaseTest extends TestCase
 {
@@ -43,10 +43,10 @@ class DatabaseTest extends TestCase
       'deepObject' =>  [
         'l-02-01' =>  [
           'l-03-01' => [
-            'l-04-0 1' => [
-              'leve l' =>  1,
-              'nam e' =>  'l-01',
-              'fla g' =>  '0'
+            'l-04-01' => [
+              'level' =>  1,
+              'name' =>  'l-01',
+              'flag' =>  '0'
             ]
           ]
         ]
@@ -55,20 +55,20 @@ class DatabaseTest extends TestCase
   }
 
   // /** @test 创建集合 */
-  public function testCreateCollection()
-  {
-    try {
-      // $db = self::$tcb->getDatabase();
-      $result = self::$db->createCollection(self::$collName);
-      var_dump($result);
-      $this->assertEquals($result['message'], 'success');
-    } catch (Exception $e) {
-      $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
-      echo $code;
-      echo "\r\n";
-      echo $e->getMessage();
-    }
-  }
+  // public function testCreateCollection()
+  // {
+  //   try {
+  //     // $db = self::$tcb->getDatabase();
+  //     $result = self::$db->createCollection(self::$collName);
+  //     var_dump($result);
+  //     $this->assertEquals($result['message'], 'success');
+  //   } catch (Exception $e) {
+  //     $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
+  //     echo $code;
+  //     echo "\r\n";
+  //     echo $e->getMessage();
+  //   }
+  // }
 
   /** @test 
    * 
@@ -115,43 +115,6 @@ class DatabaseTest extends TestCase
     } catch (Exception $e) { }
   }
 
-
-  /** @test 删除文档
-   * @depends testAddData
-   */
-  public function testRemoveData($id)
-  {
-    try {
-      $result = self::$db->collection(self::$collName)->doc($id)->remove();
-      $this->assertEquals($result['deleted'], 1);
-      // $db = self::$tcb->getDatabase();
-      // // $db->collection('testcollection')->doc("W9lw-3hEiJmgG5_5")->remove();
-      // $_ = $db->command;
-      // $db->collection('coll-1')->where($_->or([['properties' => ['memory' => $_->gt(8)]], ['properties' => ['cpu' => 3.2]]]))->remove();
-    } catch (Exception $e) {
-      $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
-      echo $code;
-      echo "\r\n";
-      echo $e->getMessage();
-    }
-  }
-
-
-  // public function testCountData()
-  // {
-  //   $db = self::$tcb->getDatabase();
-  //   $_ = $db->command;
-  //   // $db->collection('coll-1')->where([
-  //   //   "data" => $_->gt(50)->lt(100),
-  //   //   "b" => $db->RegExp(['regexp' => 'miniprogram', 'options' => 'i']),
-  //   //   "c" => $db->serverDate(['offset' => 60 * 60 * 1000])
-  //   // ])->count();
-
-  //   $db->collection('coll-1')->where([
-  //     "data" => ['tags' => $_->push(['mini-program', 'cloud'])]
-  //   ])->count();
-  // }
-
   /** @test 
    *  @depends testAddData
    *  更新文档 */
@@ -173,18 +136,23 @@ class DatabaseTest extends TestCase
 
     $result = self::$db->collection(self::$collName)->where(['_id' => $id])->get();
     $this->assertEquals($result['data'][0]['array'], [['a' => 1, 'b' => 2, 'c' => 3]]);
+  }
 
-    // $db = self::$tcb->getDatabase();
-    // $_ = $db->command;
-    // // $db->collection('coll-1')->where([
-    // //   "data" => $_->gt(50)->lt(100),
-    // //   "b" => $db->RegExp(['regexp' => 'miniprogram', 'options' => 'i']),
-    // //   "c" => $db->serverDate(['offset' => 60 * 60 * 1000])
-    // // ])->count();
 
-    // $db->collection('coll-1')->where([
-    //   'name' => $_->eq('hey')
-    // ])->update(['name' => 'Hey']);
+  /** @test 删除文档
+   * @depends testAddData
+   */
+  public function testRemoveData($id)
+  {
+    try {
+      $result = self::$db->collection(self::$collName)->doc($id)->remove();
+      $this->assertEquals($result['deleted'], 1);
+    } catch (Exception $e) {
+      $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
+      echo $code;
+      echo "\r\n";
+      echo $e->getMessage();
+    }
   }
 
   /**

@@ -1,10 +1,10 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
-use Tcb\Validate\Validate;
-use TCB\TcbException\TcbException;
+use TencentCloudBase\Database\Validate;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\TCB;
 
 class ValidateTest extends TestCase
 {

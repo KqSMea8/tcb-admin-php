@@ -1,5 +1,4 @@
 <?php
-
 const SUCCESS = 'SUCCESS'; //0;
 const ERROR = 'ERROR'; //100000;
 

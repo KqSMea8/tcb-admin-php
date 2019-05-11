@@ -1,9 +1,8 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
+use TencentCloudBase\TCB;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Constraint\Exception;
 
 class GeoTest extends TestCase
 {
@@ -42,7 +41,7 @@ class GeoTest extends TestCase
   public static function setUpBeforeClass()
   {
     global $TcbConfig;
-    $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq", 'env' => 'tcbenv-mPIgjhnq'); // 
+    $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq"); // 
     // $TcbConfig = array("secretId" => "AKIDY3Ws27uiEg0CC1QEg4GJCvWZUFrJhw66", "secretKey" => "2xiKmx1tdEhy76tVvJWggU7ZYP5cyCHO");
     self::$tcb = new Tcb($TcbConfig);
     self::$db = self::$tcb->getDatabase();

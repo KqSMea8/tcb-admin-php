@@ -1,61 +1,64 @@
 <?php
-require_once "src/utils/base.php";
+namespace TencentCloudBase\Utils;
+
+use TencentCloudBase\Utils\TcbBase;
+
 /**
  * database 
  * 
  */
 class Request extends TcbBase
 {
-    // private $config;
-    protected $config;
-    public function __construct($config)
-    {
-        parent::__construct($config);
-    }
+  // private $config;
+  protected $config;
+  public function __construct($config)
+  {
+    parent::__construct($config);
+  }
 
-    /**
-     * 发送请求
-     *
-     * @param api   - 接口
-     * @param data  - 参数
-     */
-    public function send($api, $data)
-    {
-        $params = array_merge($data, array('action' => $api));
-        $args = array();
+  /**
+   * 发送请求
+   *
+   * @param api   - 接口
+   * @param data  - 参数
+   */
+  public function send($api, $data)
+  {
+    $params = array_merge($data, array('action' => $api));
+    $args = array();
 
-        $args['params'] = $params;
-        $args['method'] = 'post';
-        $args['headers'] = array('content-type' => 'application/json');
-        $result = $this->cloudApiRequest($args);
-        // 
+    $args['params'] = $params;
+    $args['method'] = 'post';
+    $args['headers'] = array('content-type' => 'application/json');
+    $result = $this->cloudApiRequest($args);
+    // 
 
-        return $result;
-    }
+    return $result;
+  }
 
 
-    /**
-     * 发送中间格式请求
-     *
-     * @param api   - 接口
-     * @param data  - 参数
-     */
-    public function sendMidData($api, $data)
-    {
-        $params = array_merge($data, array('action' => $api));
-        $composerJson = json_decode(file_get_contents('composer.json'), true);
+  /**
+   * 发送中间格式请求
+   *
+   * @param api   - 接口
+   * @param data  - 参数
+   */
+  public function sendMidData($api, $data)
+  {
+    $params = array_merge($data, array('action' => $api));
+    $composerJson = json_decode(file_get_contents('composer.json'), true);
 
-        $databaseVersion = $composerJson['extra']['databaseVersion'];
+    $databaseVersion = $composerJson['extra']['databaseVersion'];
 
-        $args = array();
+    $args = array();
 
-        $args['params'] = $params;
-        $args['method'] = 'post';
-        $args['headers'] = array('content-type' => 'application/json');
-        $args['config'] = array_merge($this->config, array('databaseMidTran' => true, 'databaseVersion' => $databaseVersion));
+    $args['params'] = $params;
+    $args['method'] = 'post';
+    $args['headers'] = array('content-type' => 'application/json');
+    $args['config'] = array_merge($this->config, array('databaseMidTran' => true, 'databaseVersion' => $databaseVersion));
 
-        $result = $this->cloudApiRequest($args);
-        // 
-        return $result;
-    }
+    $result = $this->cloudApiRequest($args);
+    // 
+    return $result;
+  }
 }

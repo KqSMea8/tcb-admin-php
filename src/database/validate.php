@@ -1,12 +1,11 @@
 <?php
-namespace Tcb\Validate;
+namespace TencentCloudBase\Database;
 
 require_once "src/consts/code.php";
 require_once "src/database/constants.php";
-require_once "src/database/util.php";
 
-use TCB\TcbException\TcbException;
-use Tcb\Util\Util;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Util;
 
 /**
  * 校验模块

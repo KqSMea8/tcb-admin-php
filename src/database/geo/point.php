@@ -1,11 +1,9 @@
 <?php
-namespace Tcb\Geo\Point;
+namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/validate.php";
 require_once "src/database/constants.php";
-require_once "src/database/util.php";
 
-use Tcb\Validate\Validate;
+use TencentCloudBase\Database\Validate;
 
 /**
  * 地理位置

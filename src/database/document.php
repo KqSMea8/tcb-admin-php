@@ -1,16 +1,13 @@
 <?php
+namespace TencentCloudBase\Database;
 
-require_once "src/database/util.php";
 require_once "src/consts/code.php";
-require_once "src/database/commands/update.php";
-require_once 'src/utils/dbRequest.php';
-require_once "src/database/utils/promiseCallback.php";
-// require_once "src/database/utils/dataFormat.php";
 
-// use function Tcb\DataFormat\dataFormat;
-use function Tcb\PromiseCallback\createPromiseCallback;
-use Tcb\TcbException\TcbException;
-use Tcb\Util\Util;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Util;
+
+use TencentCloudBase\Utils\Request;
+use TencentCloudBase\Database\Utils\Format;
 
 class DocumentReference
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Tcb\ServerDate;
+namespace TencentCloudBase\Database\ServerDate;
 
 class ServerDate
 {

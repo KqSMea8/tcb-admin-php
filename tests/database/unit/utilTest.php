@@ -1,9 +1,11 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
-use Tcb\Util\Util;
+// use Tcb\Util\Util;
+use TencentCloudBase\Database\Util;
+use TencentCloudBase\TCB;
+
 
 class UtilTest extends TestCase
 {

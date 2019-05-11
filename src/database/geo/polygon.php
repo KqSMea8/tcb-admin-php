@@ -1,14 +1,11 @@
 <?php
-namespace Tcb\Geo\Polygon;
+namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/validate.php";
 require_once "src/database/constants.php";
-require_once "src/database/util.php";
 require_once "src/consts/code.php";
 
-
-use Tcb\TcbException\TcbException;
-use Tcb\Geo\LineString\LineString;
+use TencentCloudBase\Database\Geo\LineString;
+use TencentCloudBase\Utils\TcbException;
 
 /**
  * 地理位置

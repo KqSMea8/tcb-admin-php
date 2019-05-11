@@ -1,19 +1,17 @@
 <?php
+namespace TencentCloudBase\Database;
 
 require_once "src/consts/code.php";
 require_once "src/database/constants.php";
-require_once "src/database/validate.php";
-require_once "src/database/util.php";
-require_once 'src/utils/dbRequest.php';
-require_once "src/database/utils/dataFormat.php";
 
-// require_once "src/database/serializer/query.php";
-// require_once "src/database/serializer/update.php";
+use TencentCloudBase\Database\Validate;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Util;
 
-use Tcb\TcbException\TcbException;
-use Tcb\Util\Util;
-use Tcb\Validate\Validate;
-// use function Tcb\DataFormat\dataFormat;
+use TencentCloudBase\Utils\Request;
+use TencentCloudBase\Database\Utils\Format;
+
+
 
 class Query
 {

@@ -1,12 +1,10 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
-use Tcb\Util\Util;
-use TCB\TcbException\TcbException;
-
-// use PHPUnit\Framework\Constraint\Exception;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Util;
+use TencentCloudBase\TCB;
 
 class DocumentTest extends TestCase
 {

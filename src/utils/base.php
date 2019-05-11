@@ -1,9 +1,8 @@
 <?php
-// require_once 'src/sdk/TCloudAutoLoader.php';
-require_once 'src/utils/autoload.php';
-require_once 'src/utils/auth.php';
+namespace TencentCloudBase\Utils;
 
-use Tcb\TcbAuth\Auth;
+use TencentCloudBase\Utils\Auth;
+
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_decode;
@@ -239,6 +238,7 @@ class TcbBase
       }
     } catch (RequestException $e) {
       echo $e->getRequest();
+      echo $e->getMessage();
     }
   }
 }

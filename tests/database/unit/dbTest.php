@@ -1,8 +1,9 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
+use TencentCloudBase\TCB;
+
 use PHPUnit\Framework\Constraint\Exception;
 
 class DbTest extends TestCase

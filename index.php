@@ -1,8 +1,7 @@
 <?php
-require_once './src/functions/index.php';
-require_once './src/storage/index.php';
-require_once './src/database/index.php';
-require_once './src/database/db.php';
+namespace TencentCloudBase;
+
+use TencentCloudBase\Database\Db;
 
 class TCB
 {

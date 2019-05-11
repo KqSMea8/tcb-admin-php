@@ -1,60 +1,61 @@
 <?php
-require_once 'src/utils/base.php';
-require_once 'src/consts/code.php';
-require_once 'src/utils/exception.php';
+namespace TencentCloudBase\Functions;
 
-use Tcb\TcbException\TcbException;
+require_once 'src/consts/code.php';
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Utils\TcbBase;
+use \Exception;
 
 class TcbFunctions extends TcbBase
 {
 
-    protected $config;
+  protected $config;
 
-    function __construct($config)
-    {
-        parent::__construct($config);
+  function __construct($config)
+  {
+    parent::__construct($config);
+  }
+
+  public function callFunction($options)
+  {
+
+    if (!array_key_exists('name', $options)) {
+      throw new TcbException(FUNCTIONS_NAME_REQUIRED, '函数名不能为空');
     }
 
-    public function callFunction($options)
-    {
+    // 环境变量中取wxCloudApiToken
+    $wxCloudApiToken = getenv('WX_API_TOKEN') ? getenv('WX_API_TOKEN') : '';
 
-        if (!array_key_exists('name', $options)) {
-            throw new TcbException(FUNCTIONS_NAME_REQUIRED, '函数名不能为空');
-        }
+    $name = $options['name'];
+    $data = array_key_exists('data', $options) ? $options['data'] : array();
 
-        // 环境变量中取wxCloudApiToken
-        $wxCloudApiToken = getenv('WX_API_TOKEN') ? getenv('WX_API_TOKEN') : '';
+    $args = array();
+    // $args['action'] = 'functions.invokeFunction';
 
-        $name = $options['name'];
-        $data = array_key_exists('data', $options) ? $options['data'] : array();
+    $args['params'] = array(
+      'action' => 'functions.invokeFunction',
+      'function_name' => $name,
+      'request_data' => json_encode($data),
+      'wxCloudApiToken' => $wxCloudApiToken
+    );
 
-        $args = array();
-        // $args['action'] = 'functions.invokeFunction';
+    $args['method'] = 'post';
+    $args['headers'] = array("content-type" => "application/json");
 
-        $args['params'] = array(
-            'action' => 'functions.invokeFunction',
-            'function_name' => $name,
-            'request_data' => json_encode($data),
-            'wxCloudApiToken' => $wxCloudApiToken
-        );
+    try {
+      $result = $this->cloudApiRequest($args);
 
-        $args['method'] = 'post';
-        $args['headers'] = array("content-type" => "application/json");
+      // 如果 code 和 message 存在，证明报错了
+      if (array_key_exists('code', $result)) {
+        throw new TcbException($result['code'], $result['message'], $result['RequestId']);
+      }
 
-        try {
-            $result = $this->cloudApiRequest($args);
-
-            // 如果 code 和 message 存在，证明报错了
-            if (array_key_exists('code', $result)) {
-                throw new TcbException($result['code'], $result['message'], $result['RequestId']);
-            }
-
-            return [
-                'requestId' => $result['requestId'],
-                'result' => json_decode($result['data']['response_data']),
-            ];
-        } catch (Exception $e) {
-            throw new TcbException($e->getErrorCode(), $e->getMessage());
-        }
+      return [
+        'requestId' => $result['requestId'],
+        'result' => json_decode($result['data']['response_data']),
+      ];
+    } catch (Exception $e) {
+      throw new TcbException($e->getErrorCode(), $e->getMessage());
     }
+  }
 }

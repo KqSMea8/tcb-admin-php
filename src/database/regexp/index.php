@@ -1,8 +1,7 @@
 <?php
-namespace Tcb\RegExp;
+namespace TencentCloudBase\Database\Regexp;
 
-use Tcb\TcbException\TcbException;
-
+use TencentCloudBase\Utils\TcbException;
 
 class RegExp
 {

@@ -2,9 +2,10 @@
 /**
  * 签名类
  */
-namespace Tcb\TcbAuth;
+namespace TencentCloudBase\Utils;
 
-use Tcb\TcbException\TcbException;
+use TencentCloudBase\Utils\TcbException;
+
 
 class Auth
 {

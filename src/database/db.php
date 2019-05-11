@@ -1,36 +1,21 @@
 <?php
-require_once "src/utils/base.php";
-// require_once "src/database/serverDate/index.php";
-require_once "src/database/collection.php";
-require_once "src/database/command.php";
-require_once "src/database/regexp/index.php";
-require_once "src/database/serverDate/index.php";
+namespace TencentCloudBase\Database;
 
 require_once 'src/consts/code.php';
-require_once 'src/utils/dbRequest.php';
-require_once 'src/database/utils/dataFormat.php';
 
-require_once "src/database/geo/lineString.php";
-require_once "src/database/geo/multiLineString.php";
-require_once "src/database/geo/multiPoint.php";
-require_once "src/database/geo/multiPolygon.php";
-require_once "src/database/geo/polygon.php";
-require_once "src/database/geo/point.php";
+use TencentCloudBase\Database\Geo\LineString;
+use TencentCloudBase\Database\Geo\MultiLineString;
+use TencentCloudBase\Database\Geo\MultiPoint;
+use TencentCloudBase\Database\Geo\MultiPolygon;
+use TencentCloudBase\Database\Geo\Point;
+use TencentCloudBase\Database\Geo\Polygon;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\CollectionReference;
+use TencentCloudBase\Database\ServerDate\ServerDate;
+use TencentCloudBase\Database\Regexp\RegExp;
 
-
-use Tcb\Geo\LineString\LineString;
-use Tcb\Geo\MultiLineString\MultiLineString;
-use Tcb\Geo\Point\Point;
-use Tcb\Geo\MultiPoint\MultiPoint;
-use Tcb\Geo\Polygon\Polygon;
-use Tcb\Geo\MultiPolygon\MultiPolygon;
-
-use Tcb\ServerDate\ServerDate;
-use Tcb\RegExp\RegExp;
-
-// use Tcb\Collection\CollectionReference;
-// use Tcb\Command\Command;
-use Tcb\TcbException\TcbException;
+use TencentCloudBase\Database\Command;
+use TencentCloudBase\Utils\Request;
 
 class Db
 {

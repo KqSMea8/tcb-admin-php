@@ -1,9 +1,8 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Constraint\Exception;
+use TencentCloudBase\TCB;
 
 class CollectionTest extends TestCase
 {
@@ -38,7 +37,7 @@ class CollectionTest extends TestCase
     self::$tcb = new Tcb($TcbConfig);
     self::$db = self::$tcb->getDatabase();
     self::$_ = self::$db->command;
-    self::$collName = "coll-php-tes";
+    self::$collName = "coll-1";
     self::$collection = self::$db->collection(self::$collName);
     self::$initialData = [
       'name' => 'aaa',
@@ -73,10 +72,24 @@ class CollectionTest extends TestCase
     self::$db->createCollection(self::$collName);
   }
 
+  public function testAllData()
+  {
+    $data = self::$collection->get();
+    $this->assertEquals(is_array($data['data']), true);
+  }
+
   public function testOrderBy()
   {
     $field = "huming";
     $direction = "asc";
+
+    $addRes1 = self::$collection->add(['huming' => 3]);
+    $this->assertEquals(!empty($addRes1['id'] && !empty($addRes1['requestId'])), true);
+    $addRes2 = self::$collection->add(['huming' => 1]);
+    $this->assertEquals(!empty($addRes2['id'] && !empty($addRes2['requestId'])), true);
+    $addRes3 = self::$collection->add(['huming' => 2]);
+    $this->assertEquals(!empty($addRes3['id'] && !empty($addRes3['requestId'])), true);
+
     $data = self::$collection->orderBy($field, $direction)->get();
     $this->assertEquals(self::is_orderArr($data['data']), true);
   }

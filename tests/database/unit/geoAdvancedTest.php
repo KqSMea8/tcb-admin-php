@@ -1,17 +1,18 @@
 <?php
-require_once "index.php";
-// require_once "tests/config/index.php";
+require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
-// use PHPUnit\Framework\Constraint\Exception;
 
-use Tcb\Geo\LineString\LineString;
-use Tcb\Geo\MultiLineString\MultiLineString;
-use Tcb\Geo\Point\Point;
-use Tcb\Geo\MultiPoint\MultiPoint;
-use Tcb\Geo\Polygon\Polygon;
-use Tcb\Geo\MultiPolygon\MultiPolygon;
-use Tcb\TcbException\TcbException;
+use TencentCloudBase\Database\Geo\LineString;
+use TencentCloudBase\Database\Geo\MultiLineString;
+use TencentCloudBase\Database\Geo\MultiPoint;
+use TencentCloudBase\Database\Geo\MultiPolygon;
+use TencentCloudBase\Database\Geo\Point;
+use TencentCloudBase\Database\Geo\Polygon;
+
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\TCB;
+
 
 class GeoAdvancedTest extends TestCase
 {
@@ -69,7 +70,7 @@ class GeoAdvancedTest extends TestCase
     global $TcbConfig;
     $TcbConfig = array("secretId" => "AKIDkOrrlYnf2ERxNeyna9Zowq4A4mNnl63p", "secretKey" => "juAIG5jCSXQAi9PUN3ax9Bj6HONDuQjq"); // 
     // $TcbConfig = array("secretId" => "AKIDY3Ws27uiEg0CC1QEg4GJCvWZUFrJhw66", "secretKey" => "2xiKmx1tdEhy76tVvJWggU7ZYP5cyCHO");
-    self::$tcb = new Tcb($TcbConfig);
+    self::$tcb = new TCB($TcbConfig);
     self::$db = self::$tcb->getDatabase();
     self::$_ = self::$db->command;
     self::$collName = "coll-1";
@@ -165,7 +166,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadPoint1()
   {
@@ -175,7 +176,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadPoint2()
   {
@@ -185,7 +186,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadLineString1()
   {
@@ -195,7 +196,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadLineString2()
   {
@@ -216,7 +217,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadPolygon2()
   {
@@ -226,7 +227,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadPolygon3()
   {
@@ -236,7 +237,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadPolygon4()
   {
@@ -259,7 +260,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiPoint1()
   {
@@ -269,7 +270,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiPoint2()
   {
@@ -279,7 +280,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiLineString1()
   {
@@ -289,7 +290,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiLineString2()
   {
@@ -310,7 +311,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiPolygon2()
   {
@@ -320,7 +321,7 @@ class GeoAdvancedTest extends TestCase
   /**
    * Undocumented function
    *
-   * @expectedException Tcb\TcbException\TcbException
+   * @expectedException TencentCloudBase\Utils\TcbException
    */
   public static function testBadMultiPolygon3()
   {

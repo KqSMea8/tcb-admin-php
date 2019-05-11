@@ -1,13 +1,13 @@
 <?php
-namespace Tcb\Geo\LineString;
+namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/validate.php";
 require_once "src/database/constants.php";
-require_once "src/database/util.php";
 require_once "src/consts/code.php";
 
-use Tcb\TcbException\TcbException;
-use Tcb\Geo\Point\Point;
+use TencentCloudBase\Utils\TcbException;
+use TencentCloudBase\Database\Geo\Point;
+
+
 
 /**
  * 地理位置
