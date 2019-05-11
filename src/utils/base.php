@@ -92,20 +92,17 @@ class TcbBase
   {
     //
     $config = empty($args['config']) ? $this->config : $args['config'];
-    $protocol = "https";
+    $protocol =  "https";
     $pathname = "/admin";
-    // $config['secretId'] = $this->config['secretId'];
-    // $config['secretKey'] = $this->config['secretKey'];
-    // $action = $args['action'];
     $params = $args['params'];
-
     $defaultTimeout = 15;
-    $paramsAdd = array('timestamp' => self::getMilTimeseconds(), 'eventId' => self::getEventId());
 
+
+    $paramsAdd = array('timestamp' => self::getMilTimeseconds(), 'eventId' => self::getEventId());
     if (array_key_exists('envName', $config)) {
-      // $config['envName'] = $config['envName'];
       $paramsAdd['envName'] = $config['envName'];
     }
+
     if (array_key_exists('isHttp', $config)) {
       $protocol = $config['isHttp'] ? 'http' : 'https';
     }
@@ -164,35 +161,24 @@ class TcbBase
 
 
     // ??url
-    $url = $protocol . "://tcb-admin.tencentcloudapi.com";
+    $url = $protocol . "://tcb-admin.tencentcloudapi.com" . $pathname;
+
+    // $url = "http://localhost:8002/admin";
+    $url = "http://118.126.68.63/admin";
+
+
     if (getenv('TENCENTCLOUD_RUNENV') === "SCF") {
       $protocol = "http";
-      $url = $protocol . "://tcb-admin.tencentyun.com";
+      $url = $protocol . "://tcb-admin.tencentyun.com" . $pathname;
     }
 
     if ($params['action'] === "wx.api" || $params['action'] === "wx.openApi") {
-      $url = $protocol . "://tcb-open.tencentcloudapi.com";
+      $url = $protocol . "://tcb-open.tencentcloudapi.com" . $pathname;
     }
 
-    // ??????opts
-    // $opts = array();
-    // $defaultTimeout = 15000;
-    // if (array_key_exists('serviceUrl', $this->config)) {
-    //     $tempUrl = $this->config['serviceUrl'] ? $this->config['serviceUrl'] : $url;
-    //     $opts['url'] = $tempUrl . '?' . 'seqId=' . self::getSeqId();
-    // }
-    // if (array_key_exists('proxy', $this->config)) {
-    //     $opts['proxy'] = $this->config['proxy'];
-    // }
-    // if (array_key_exists('timeout', $this->config)) {
-    //     $opts['timeout'] = $this->config['timeout'] ? $this->config['timeout'] : $defaultTimeout;
-    // }
-    // if (array_key_exists('timeout', $args)) {
-    //     $opts['timeout'] = $args['timeout'] ? $args['timeout'] : $opts['timeout'];
-    // }
+    $realUrl = isset($config['serviceUrl']) ? (!empty($config['serviceUrl']) ? $config['serviceUrl'] : $url) : $url;
 
-    // $opts = array_merge($opts, array('method' => $method, 'headers' => $authObj['Headers']));
-
+    // $realUrl = $realUrl . '?eventId=' . $params['eventId'] . '&seqId=' . self::getSeqId();
 
     // database??? ?config.transMidData ?true
     $service = explode('.', $params['action'])[0];
@@ -203,7 +189,9 @@ class TcbBase
 
     $opts = array();
 
+    // opts timeout
     $opts['timeout'] = $defaultTimeout;
+
     if (isset($config['timeout'])) {
       $opts['timeout'] = $config['timeout'] ? $config['timeout'] : $defaultTimeout;
     }
@@ -212,13 +200,21 @@ class TcbBase
       $opts['timeout'] = $args['timeout'] ? $args['timeout'] : $opts['timeout'];
     }
 
+    // opts query
+    $optsQuery = [
+      'eventId' => $params['eventId'],
+      'seqId' => self::getSeqId()
+    ];
 
     if ($params['action'] === 'storage.uploadFile') {
       // multipart ??????
-      $opts = array('headers' => $authObj['Headers'], 'multipart' => self::multiPartDataTran($params));
+      $opts = array('headers' => $authObj['Headers'], 'multipart' => self::multiPartDataTran($params), 'query' => $optsQuery);
     } else {
       if ($method === 'post') {
-        $opts = array('headers' => $authObj['Headers'], 'json' => $params);
+        $opts = array('headers' => $authObj['Headers'], 'json' => $params, 'query' => $optsQuery);
+      } else { // get
+        // todo
+        $opts = array('headers' => $authObj['Headers'], 'query' => array_merge($optsQuery, $params));
       }
     }
 
@@ -226,21 +222,14 @@ class TcbBase
       $opts['proxy'] = $config['proxy'];
     }
 
+    $opts['proxy'] = "http://web-proxy.tencent.com:8080";
     // opts ???key???????????queryParams????
     self::sortArrayKey($opts);
 
-
-    // guzzlehttp 构造请求
-    $url = "http://localhost:8002";
-    // $url = "http://118.126.68.63";
-    // $opts['proxy'] = "http://web-proxy.tencent.com:8080";
-
-    // $uri = "/admin";
-
-    $http_client = new HttpClient(["base_uri" => $url]);
+    $http_client = new HttpClient(["base_uri" => $realUrl]);
     try {
       // $resp = $http_client->post($pathname, $opts);
-      $resp = $http_client->request('POST', $url . $pathname, $opts);
+      $resp = $http_client->request($authObj['Method'], $realUrl, $opts);
       $resultBody = $resp->getBody();
       $resultCode = $resp->getStatusCode();
       if ($resultCode === 200) {

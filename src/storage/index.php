@@ -39,6 +39,24 @@ class TcbStorage extends TcbBase
     ];
   }
 
+  public static function encodeURI($url)
+  {
+    // http://php.net/manual/en/function.rawurlencode.php
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/encodeURI
+    $unescaped = array(
+      '%2D' => '-', '%5F' => '_', '%2E' => '.', '%21' => '!', '%7E' => '~',
+      '%2A' => '*', '%27' => "'", '%28' => '(', '%29' => ')'
+    );
+    $reserved = array(
+      '%3B' => ';', '%2C' => ',', '%2F' => '/', '%3F' => '?', '%3A' => ':',
+      '%40' => '@', '%26' => '&', '%3D' => '=', '%2B' => '+', '%24' => '$'
+    );
+    $score = array(
+      '%23' => '#'
+    );
+    return strtr(rawurlencode($url), array_merge($reserved, $unescaped, $score));
+  }
+
   public function getTempFileURL($options = [])
   {
 
@@ -59,8 +77,8 @@ class TcbStorage extends TcbBase
         }
 
         array_push($processFiles, array(
-          'fileid' => $file['fileID']
-          // 'MaxAge' => $file['maxAge']
+          'fileid' => $file['fileID'],
+          'max_age' => $file['maxAge']
         ));
       } elseif (is_string($file)) {
         array_push($processFiles, array(
@@ -138,17 +156,6 @@ class TcbStorage extends TcbBase
         throw new TcbException($result->code, $result->message, $result->RequestId);
       }
 
-      $tmpFiles = [];
-
-      // foreach ($result->DeletedFiles as $file) {
-      //     $tmpFiles = array_merge($tmpFiles, [
-      //         [
-      //             'code' => $file->Code,
-      //             'fileID' => $file->FileId
-      //         ]
-      //     ]);
-      // }
-
       return [
         'fileList' => $result['data']['delete_list'],
         'requestId' => $result['requestId']
@@ -166,7 +173,7 @@ class TcbStorage extends TcbBase
 
     $tmpUrlRes = $this->getTempFileURL([
       "fileList" => [
-        ["fileID" => $fileID, "maxAge" => 100000]
+        ["fileID" => $fileID, "maxAge" => 600]
       ]
     ]);
 
@@ -180,22 +187,32 @@ class TcbStorage extends TcbBase
     $res = $tmpUrlRes['fileList'][0];
 
     if ($res['code'] != 'SUCCESS') {
-      throw $res;
+      return $res;
     }
 
     $tmpUrl = $res['tempFileURL'];
+    $tmpUrl = self::encodeURI($tmpUrl);
 
     try {
       $file = file_get_contents($tmpUrl);
 
-      if (isset($tempFilePath)) {
-        file_put_contents($tempFilePath, $file);
-        return [
-          'requestId' => $tmpUrlRes['requestId']
-        ];
+      if ($file !== false) {
+        if (isset($tempFilePath)) {
+          file_put_contents($tempFilePath, $file);
+          return [
+            'requestId' => $tmpUrlRes['requestId'],
+            'message' => '文件下载完成'
+          ];
+        } else {
+          return [
+            'fileContent' => $file,
+            'message' => '文件下载完成',
+            'requestId' => $tmpUrlRes['requestId']
+          ];
+        }
       } else {
         return [
-          'fileContent' => $file,
+          'message' => '文件下载失败',
           'requestId' => $tmpUrlRes['requestId']
         ];
       }

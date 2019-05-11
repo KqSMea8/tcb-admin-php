@@ -25,41 +25,49 @@ class Command
 
   public function eq($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$eq', $val]);
   }
 
   public function neq($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$neq', $val]);
   }
 
   public function lt($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$lt', $val]);
   }
 
   public function lte($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$lte', $val]);
   }
 
   public function gt($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$gt', $val]);
   }
 
   public function gte($val)
   {
+    $val = Format::dataFormat($val);
     return new QueryCommand([], ['$gte', $val]);
   }
 
   public function in($arr)
   {
+    $arr = Format::dataFormat($arr);
     return new QueryCommand([], ['$in', $arr]);
   }
 
   public function nin($arr)
   {
+    $arr = Format::dataFormat($arr);
     return new QueryCommand([], ['$nin', $arr]);
   }
 
@@ -196,6 +204,7 @@ class Command
 
   public function set($val)
   {
+    $val = Format::dataFormat($val);
     return new UpdateCommand([], ['$set', $val]);
   }
 
@@ -206,16 +215,19 @@ class Command
 
   public function inc($val)
   {
+    $val = Format::dataFormat($val);
     return new UpdateCommand([], ['$inc', $val]);
   }
 
   public function mul($val)
   {
+    $val = Format::dataFormat($val);
     return new UpdateCommand([], ['$mul', $val]);
   }
 
   public function push($val)
   {
+    $val = Format::dataFormat($val);
     return new UpdateCommand([], ['$push', $val]);
   }
 
@@ -231,6 +243,7 @@ class Command
 
   public function unshift($val)
   {
+    $val = Format::dataFormat($val);
     return new UpdateCommand([], ['$unshift', $val]);
   }
 }

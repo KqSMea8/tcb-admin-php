@@ -23,7 +23,8 @@ class StorageTest extends TestCase
       $storage = self::$tcb->getStorage();
       $result = $storage->getTempFileURL([
         "fileList" => [
-          ["fileID" => "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg", "maxAge" => 100000]
+          // ["fileID" => "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg", "maxAge" => 100000] // local
+          ["fileID" => "cloud://jimmytest-088bef.jimmytest-088bef-1251059088/a|b.jpeg", "maxAge" => 100000] // 预发
         ]
       ]);
 
@@ -46,7 +47,8 @@ class StorageTest extends TestCase
       $storage = self::$tcb->getStorage();
       $result = $storage->deleteFile([
         "fileList" => [
-          "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg"
+          // "cloud://tcbenv-mPIgjhnq.test-13db21/a|b.jpeg"
+          "cloud://jimmytest-088bef.jimmytest-088bef-1251059088/a|b.jpeg"
         ]
       ]);
 
@@ -93,10 +95,7 @@ class StorageTest extends TestCase
       $cloudPath = 'a|b.jpeg';
 
       $fileResult = $storage->uploadFile(array('cloudPath' => $cloudPath, 'fileContent' => $fileContent));
-      // $result = $storage->downloadFile([
-      //     "fileID" => "cloud://test-e48fe1.7465-test-e48fe1/1.jpg",
-      //     "tempFilePath" => "./tests/1.jpg"
-      // ]);
+      print_r($fileResult);
       $this->assertEquals($fileResult["code"], "SUCCESS");
       // file_exists('./tests/1.jpg');
     } catch (Exception $e) {

@@ -16,7 +16,7 @@ class TCB
     'isHttp' => null,
     'proxy' => null,
     'timeout' => null,
-    
+    'serviceUrl' => null
   ])
   {
     $this->config = [];
@@ -36,12 +36,31 @@ class TCB
       $this->config->isHttp = $options['isHttp']; // -> ???????
     }
 
-    if (array_key_exists('sessionToken', $options)) {
-      $this->config->sessionToken = $options['sessionToken'] ? $options['sessionToken'] : null;
-    }
-
     if (array_key_exists('env', $options)) {
       $this->config['envName'] = $options['env'];
+    }
+
+    if (array_key_exists('proxy', $options)) {
+      $this->config['proxy'] = $options['proxy'];
+    }
+
+    if (array_key_exists('serviceUrl', $options)) {
+      $this->config['serviceUrl'] = $options['serviceUrl'];
+    }
+
+    if (array_key_exists('timeout', $options)) {
+      $this->config['timeout'] = $options['timeout'];
+    }
+
+    if (array_key_exists('sessionToken', $options)) {
+      if (!empty($options['sessionToken'])) {
+        $this->config->sessionToken = $options['sessionToken'];
+      } else if ($this->config['secretId'] && $this->config['secretKey']) {
+        $this->config->sessionToken = null;
+      } else {
+        $envSessionToken = getenv('TENCENTCLOUD_SESSIONTOKEN');
+        $this->config->sessionToken = $envSessionToken ? $envSessionToken : null;
+      }
     }
   }
 

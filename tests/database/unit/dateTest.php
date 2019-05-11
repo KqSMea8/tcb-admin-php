@@ -53,8 +53,9 @@ class DateTest extends TestCase
     self::$collection = self::$db->collection(self::$collName);
     self::$offset = 60 * 1000;
 
-    self::$timestamp = self::getMilTimeseconds();
-    self::$time = round(self::$timestamp / 1000);
+    // self::$timestamp = self::getMilTimeseconds();
+    self::$timestamp = new DateTime();
+    self::$time = self::$timestamp->getTimestamp();
 
     self::$initialData = [
       'name' => 'test',
@@ -82,15 +83,16 @@ class DateTest extends TestCase
     // read
     $id = $res['id'];
     $res = self::$collection->where(['_id' => $id])->get();
-    $this->assertEquals($res['data'][0]['date'], self::$initialData['date']);
-    $this->assertEquals(date("d", $res['data'][0]['serverDate1']), date("d", self::$initialData['date']));
+    $this->assertEquals($res['data'][0]['date'], self::$initialData['date']->getTimestamp() * 1000);
+    $this->assertEquals(date("d", $res['data'][0]['serverDate1']), date("d", self::$initialData['date']->getTimestamp() * 1000));
     $this->assertEquals($res['data'][0]['serverDate1'] + self::$offset, $res['data'][0]['serverDate2']);
     $this->assertEquals($res['data'][0]['timestamp'], self::$time * 1000);
     $this->assertEquals($res['data'][0]['emptyArray'], []);
     $this->assertEquals($res['data'][0]['emptyObject'], []);
 
+    $allTestRes = self::$collection->get();
     $res = self::$collection->where(['date' => $_->eq(self::$timestamp)])->get();
-    $this->assertEquals($res['data'][0]['date'], self::$initialData['date']);
+    $this->assertEquals($res['data'][0]['date'], self::$initialData['date']->getTimestamp() * 1000);
 
     $res = self::$collection->where(['date' => $_->lte(self::$timestamp)])->get();
     $this->assertEquals(count($res['data']) > 0, true);
@@ -99,13 +101,13 @@ class DateTest extends TestCase
     $this->assertEquals(count($res['data']) > 0, true);
 
     // update
-    $newDate = self::getMilTimeseconds();
+    $newDate = new DateTime();
     $newServerDate = self::$db->serverDate(['offset' => 1000 * 60 * 60]);
     $res = self::$collection->where(['date' => $_->lte(self::$timestamp)->and($_->gte(self::$timestamp))])->update(['date' => $newDate, 'serverDate2' => $newServerDate]);
     $this->assertEquals($res['updated'], 1);
 
     $res = self::$collection->where(['_id' => $id])->get();
-    $this->assertEquals($res['data'][0]['date'], $newDate);
+    $this->assertEquals($res['data'][0]['date'], $newDate->getTimestamp() * 1000);
     $this->assertEquals($res['data'][0]['serverDate2'] - $res['data'][0]['serverDate1'] > 1000 * 60 * 60, true);
 
 

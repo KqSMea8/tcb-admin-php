@@ -29,6 +29,10 @@ class Format
       return 'serverDate';
     }
 
+    if ($data instanceof DateTime) {
+      return 'DateTime';
+    }
+
     return 'object';
   }
 
@@ -39,26 +43,31 @@ class Format
 
   public static function checkSpecial(&$data)
   {
-    foreach ($data as $key => $item) {
-      if (self::checkSpecialClass($item) === 'Geo') {
-        $data[$key] = $item->toJSON();
-      } else if (self::checkSpecialClass($item) === 'regExp') {
-        $data[$key] = $item->parse();
-      } else if (self::checkSpecialClass($item) === 'serverDate') {
-        $data[$key] = $item->parse();
+    if (is_object($data)) {
+      if (self::checkSpecialClass($data) === 'Geo') {
+        return $data->toJSON();
+      } else if (self::checkSpecialClass($data) === 'regExp') {
+        return $data->parse();
+      } else if (self::checkSpecialClass($data) === 'serverDate') {
+        return $data->parse();
+      } else if (self::checkSpecialClass($data) === 'DateTime') {
+        return  [
+          '$date' => $data->getTimestamp() * 1000
+        ];
       }
-      // else if (self::checkSpecialClass($item) === 'object') { } 
-      else if (is_array($item)) { // todo 检查是否为数组, 关联数组与索引数组均检查
-        self::checkSpecial($data[$key]);
+      return $data;
+    } else if (is_array($data)) {
+      foreach ($data as $key => $item) {
+        $data[$key] = self::checkSpecial($data[$key]);
       }
+      return $data;
     }
+    return $data;
   }
-
 
   public static function dataFormat($data)
   {
-
-    self::checkSpecial($data);
+    $data = self::checkSpecial($data);
     return $data;
   }
 }

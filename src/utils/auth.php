@@ -90,13 +90,6 @@ class Auth
     $exp = $now;
     $exp += 900;
 
-    // $Expires = $authOpts['Expires'] ? $authOpts['Expires'] : $authOpts['expires'];
-    // if (!$Expires) {
-    //     $exp += 900;
-    // } else {
-    //     $exp += $Expires * 1 ? $Expires * 1 : 0;
-    // }
-
     // authorization参数列表
     $qSignAlgorithm = "sha1";
     $qAk = $SecretId;

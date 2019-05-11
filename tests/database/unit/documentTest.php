@@ -4,6 +4,8 @@ require_once "index.php";
 
 use PHPUnit\Framework\TestCase;
 use Tcb\Util\Util;
+use TCB\TcbException\TcbException;
+
 // use PHPUnit\Framework\Constraint\Exception;
 
 class DocumentTest extends TestCase
@@ -83,12 +85,15 @@ class DocumentTest extends TestCase
 
   public function testSetDataInEmptyDoc()
   {
-    $documents = self::$collection->get();
-    $document = self::$collection->doc()->set(['name' => 'jude']);
-    // $this->assertEquals(isset($document['upsertedId']), true); // todo
+    try {
+      self::$collection->doc()->set(['name' => 'jude']);
+    } catch (TcbException $e) {
+      $this->assertEquals($e->getErrorCode(), INVALID_PARAM); // todo
+    }
 
-    $document = self::$collection->where(['name' => self::$_->eq('jude')])->get();
-    $this->assertEquals(self::is_orderArr($document['data']), true);
+    // add one doc
+    $addResult = self::$collection->add(['name' => 'jude']);
+    $this->assertEquals(!empty($addResult['id'] && !empty($addResult['requestId'])), true);
   }
 
   public function testSetDataInExistDoc()

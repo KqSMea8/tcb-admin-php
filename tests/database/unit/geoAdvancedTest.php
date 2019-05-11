@@ -162,170 +162,170 @@ class GeoAdvancedTest extends TestCase
     $this->assertEquals($deleteRes['deleted'], 1);
   }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadPoint1()
-  // {
-  //   self::$db->Point();
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadPoint1()
+  {
+    self::$db->Point();
+  }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadPoint2()
-  // {
-  //   self::$db->Point([], []);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadPoint2()
+  {
+    self::$db->Point([], []);
+  }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadLineString1()
-  // {
-  //   self::$db->LineString([]);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadLineString1()
+  {
+    self::$db->LineString([]);
+  }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadLineString2()
-  // {
-  //   self::$db->LineString([123, []]);
-  // }
-
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Throwable 
-  //  */
-  // public static function testBadPolygon1()
-  // {
-  //   self::$db->Polygon(null);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadPolygon2()
-  // {
-  //   self::$db->Polygon([]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadPolygon3()
-  // {
-  //   self::$db->Polygon([666, 789]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadPolygon4()
-  // {
-  //   // 回字外环
-  //   $point1 = self::$point1;
-  //   $point2 = self::$point2;
-  //   $point3 = self::$point3;
-  //   $point4 = self::$point4;
-
-  //   // 回字内环
-  //   $point5 = self::$point5;
-  //   $point6 = self::$point6;
-  //   $point7 = self::$point7;
-
-  //   $point8 = self::$point8;
-  //   $lineString = self::$db->LineString([$point1, $point2, $point3, $point4, $point8]);
-  //   self::$db->Polygon([$lineString]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiPoint1()
-  // {
-  //   self::$db->MultiPoint([]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiPoint2()
-  // {
-  //   self::$db->MultiPoint([[], []]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiLineString1()
-  // {
-  //   self::$db->MultiLineString([]);
-  // }
-
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiLineString2()
-  // {
-  //   self::$db->MultiLineString([123, null]);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadLineString2()
+  {
+    self::$db->LineString([123, []]);
+  }
 
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Throwable
-  //  */
-  // public static function testBadMultiPolygon1()
-  // {
-  //   self::$db->MultiPolygon(123);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Throwable 
+   */
+  public static function testBadPolygon1()
+  {
+    self::$db->Polygon(null);
+  }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiPolygon2()
-  // {
-  //   self::$db->MultiPolygon([]);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadPolygon2()
+  {
+    self::$db->Polygon([]);
+  }
 
-  // /**
-  //  * Undocumented function
-  //  *
-  //  * @expectedException Tcb\TcbException\TcbException
-  //  */
-  // public static function testBadMultiPolygon3()
-  // {
-  //   self::$db->MultiPolygon([666, 666]);
-  // }
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadPolygon3()
+  {
+    self::$db->Polygon([666, 789]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadPolygon4()
+  {
+    // 回字外环
+    $point1 = self::$point1;
+    $point2 = self::$point2;
+    $point3 = self::$point3;
+    $point4 = self::$point4;
+
+    // 回字内环
+    $point5 = self::$point5;
+    $point6 = self::$point6;
+    $point7 = self::$point7;
+
+    $point8 = self::$point8;
+    $lineString = self::$db->LineString([$point1, $point2, $point3, $point4, $point8]);
+    self::$db->Polygon([$lineString]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiPoint1()
+  {
+    self::$db->MultiPoint([]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiPoint2()
+  {
+    self::$db->MultiPoint([[], []]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiLineString1()
+  {
+    self::$db->MultiLineString([]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiLineString2()
+  {
+    self::$db->MultiLineString([123, null]);
+  }
+
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Throwable
+   */
+  public static function testBadMultiPolygon1()
+  {
+    self::$db->MultiPolygon(123);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiPolygon2()
+  {
+    self::$db->MultiPolygon([]);
+  }
+
+  /**
+   * Undocumented function
+   *
+   * @expectedException Tcb\TcbException\TcbException
+   */
+  public static function testBadMultiPolygon3()
+  {
+    self::$db->MultiPolygon([666, 666]);
+  }
 
 
   public function testGeoNear()
