@@ -6,6 +6,8 @@ use TencentCloudBase\Utils\Auth;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\RequestException;
 use function GuzzleHttp\json_decode;
+// use const TencentCloudBase\Consts\Code::EVENTID_NUM;
+use TencentCloudBase\Consts\Code;
 
 class TcbBase
 {
@@ -32,7 +34,7 @@ class TcbBase
 
     $timeStamp = self::getMilTimeseconds();
     // ??5?eventId
-    $eventIdRand = rand(pow(10, (EVENTID_NUM - 1)), pow(10, EVENTID_NUM) - 1);
+    $eventIdRand = rand(pow(10, (Code::EVENTID_NUM - 1)), pow(10, Code::EVENTID_NUM) - 1);
     $eventId = $timeStamp . '_' . $eventIdRand;
     return $eventId;
   }

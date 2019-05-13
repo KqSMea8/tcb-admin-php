@@ -1,9 +1,10 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once "src/consts/code.php";
-require_once "src/database/constants.php";
-
+// require_once "src/consts/code.php";
+// require_once "src/database/constants.php";
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
 use TencentCloudBase\Database\Validate;
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Database\Util;
@@ -277,11 +278,11 @@ class Query
   public function update($data = [])
   {
     if (!isset($data) || !is_array($data)) {
-      throw new TcbException(INVALID_PARAM, "参数必需是非空对象");
+      throw new TcbException(Code::INVALID_PARAM, "参数必需是非空对象");
     }
 
     if (isset($data["_id"])) {
-      throw new TcbException(INVALID_PARAM, "不能更新_id的值");
+      throw new TcbException(Code::INVALID_PARAM, "不能更新_id的值");
     }
 
     // $args = [];

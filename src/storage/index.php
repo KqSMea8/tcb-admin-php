@@ -1,8 +1,10 @@
 <?php
 namespace TencentCloudBase\Storage;
 
-require_once 'src/consts/code.php';
+// require_once 'src/consts/code.php';
 
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Utils\TcbBase;
 use \Exception;
@@ -64,7 +66,7 @@ class TcbStorage extends TcbBase
   {
 
     if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
-      throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
+      throw new TcbException(Code::INVALID_PARAM, '参数fileList类型必须是数据');
     }
 
     $fileList = $options['fileList'];
@@ -76,7 +78,7 @@ class TcbStorage extends TcbBase
           !array_key_exists('fileID', $file) ||
           !array_key_exists('maxAge', $file)
         ) {
-          throw new TcbException(INVALID_PARAM, 'fileList的元素必须是包含fileID和maxAge的对象');
+          throw new TcbException(Code::INVALID_PARAM, 'fileList的元素必须是包含fileID和maxAge的对象');
         }
 
         array_push($processFiles, array(
@@ -88,7 +90,7 @@ class TcbStorage extends TcbBase
           'fileid' => $file
         ));
       } else {
-        throw new TcbException(INVALID_PARAM, 'fileList的元素必须是字符串');
+        throw new TcbException(Code::INVALID_PARAM, 'fileList的元素必须是字符串');
       }
     }
 
@@ -131,14 +133,14 @@ class TcbStorage extends TcbBase
   {
 
     if (!array_key_exists('fileList', $options) || !is_array($options['fileList'])) {
-      throw new TcbException(INVALID_PARAM, '参数fileList类型必须是数据');
+      throw new TcbException(Code::INVALID_PARAM, '参数fileList类型必须是数据');
     }
 
     $fileList = $options['fileList'];
 
     foreach ($fileList as $file) {
       if (!is_string($file)) {
-        throw new TcbException(INVALID_PARAM, 'fileList的元素必须是非空的字符串');
+        throw new TcbException(Code::INVALID_PARAM, 'fileList的元素必须是非空的字符串');
       }
     }
 

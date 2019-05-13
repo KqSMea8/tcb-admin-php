@@ -1,7 +1,7 @@
 <?php
 namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/constants.php";
+// require_once "src/database/constants.php";
 
 use TencentCloudBase\Database\Validate;
 

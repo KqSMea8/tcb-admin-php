@@ -1,13 +1,20 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once "src/consts/code.php";
+// require_once "src/consts/code.php";
 
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Database\Util;
 
 use TencentCloudBase\Utils\Request;
 use TencentCloudBase\Database\Utils\Format;
+// use const TencentCloudBase\Consts\Code::EMPTY_PARAM;
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+// use const TencentCloudBase\Consts\Code::DATABASE_REQUEST_FAILED;
+
+use TencentCloudBase\Consts\Code;
+
+use TencentCloudBase\Database\Commands\UpdateCommand;
 
 class DocumentReference
 {
@@ -108,23 +115,23 @@ class DocumentReference
   public function set($data)
   {
     if (!isset($data) || !is_array($data)) {
-      throw new TcbException(INVALID_PARAM, "参数必需是非空对象");
+      throw new TcbException(Code::INVALID_PARAM, "参数必需是非空对象");
     }
 
     if (array_key_exists("_id", $data)) {
-      throw new TcbException(INVALID_PARAM, "不能更新_id的值");
+      throw new TcbException(Code::INVALID_PARAM, "不能更新_id的值");
     }
 
     // 检查是否有docId
     if (!isset($this->id)) {
-      throw new TcbException(INVALID_PARAM, "docId不能为空");
+      throw new TcbException(Code::INVALID_PARAM, "docId不能为空");
     }
 
     $hasOperator = self::checkOperatorMixed($data);
 
     // 不能包含操作符
     if ($hasOperator) {
-      throw new TcbException(DATABASE_REQUEST_FAILED, "update operator complicit");
+      throw new TcbException(Code::DATABASE_REQUEST_FAILED, "update operator complicit");
     }
 
     // $args = [];
@@ -165,11 +172,11 @@ class DocumentReference
   public function update($data)
   {
     if (!isset($data) && !is_array($data)) {
-      throw new TcbException(EMPTY_PARAM, "参数必需是非空对象");
+      throw new TcbException(Code::EMPTY_PARAM, "参数必需是非空对象");
     }
 
     if (array_key_exists("_id", $data)) {
-      throw new TcbException(INVALID_PARAM, "不能更新 _id 的值");
+      throw new TcbException(Code::INVALID_PARAM, "不能更新 _id 的值");
     }
 
     $query = ["_id" => $this->id];

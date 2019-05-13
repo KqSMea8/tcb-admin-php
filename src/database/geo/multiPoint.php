@@ -1,10 +1,11 @@
 <?php
 namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/constants.php";
-require_once "src/consts/code.php";
+// require_once "src/database/constants.php";
+// require_once "src/consts/code.php";
 
-
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
 use TencentCloudBase\Database\Geo\Point;
 use TencentCloudBase\Utils\TcbException;
 
@@ -29,16 +30,16 @@ class MultiPoint
   function __construct(array $points)
   {
     if (gettype($points) !== 'array') {
-      throw new TcbException(INVALID_PARAM, 'points must be of type Point. Receive type' . gettype($points));
+      throw new TcbException(Code::INVALID_PARAM, 'points must be of type Point. Receive type' . gettype($points));
     }
 
     if (count($points) === 0) {
-      throw new TcbException(INVALID_PARAM, 'points must contain 1 point at least');
+      throw new TcbException(Code::INVALID_PARAM, 'points must contain 1 point at least');
     }
 
     foreach ($points as $point) {
       if (!($point instanceof Point)) {
-        throw new TcbException(INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points));
+        throw new TcbException(Code::INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points));
       }
     }
 

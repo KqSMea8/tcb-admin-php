@@ -26,6 +26,8 @@ spl_autoload_register(function ($className) {
     'TencentCloudBase\Database\CollectionReference' =>  $dir . 'database' . DIRECTORY_SEPARATOR . 'collection',
     // command
     'TencentCloudBase\Database\Command' =>  $dir . 'database' . DIRECTORY_SEPARATOR . 'command',
+    // consts
+    'TencentCloudBase\Database\Constants' => $dir . 'database' . DIRECTORY_SEPARATOR . 'constants',
     // db
     'TencentCloudBase\Database\Db' =>  $dir . 'database' . DIRECTORY_SEPARATOR . 'db',
     // document
@@ -46,7 +48,11 @@ spl_autoload_register(function ($className) {
     'TencentCloudBase\Utils\Request' => $dir . 'utils' . DIRECTORY_SEPARATOR . 'dbRequest',
     'TencentCloudBase\Utils\TcbException' => $dir . 'utils' . DIRECTORY_SEPARATOR . 'exception',
     // index
-    'TencentCloudBase\TCB' => 'index'
+    'TencentCloudBase\TCB' => $dir . 'index',
+    // code
+    'TencentCloudBase\Consts\Code' => $dir . 'consts' . DIRECTORY_SEPARATOR . 'code',
+
+
   ];
 
   if (isset($registerMap[$className])) {

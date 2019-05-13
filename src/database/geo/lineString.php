@@ -1,11 +1,13 @@
 <?php
 namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/constants.php";
-require_once "src/consts/code.php";
+// require_once "src/consts/code.php";
+
 
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Database\Geo\Point;
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
 
 
 
@@ -29,16 +31,16 @@ class LineString
   function __construct(array $points)
   {
     if (gettype($points) !== 'array') {
-      throw new TcbException(INVALID_PARAM, 'points must be of type Point. Receive type' . gettype($points));
+      throw new TcbException(Code::INVALID_PARAM, 'points must be of type Point. Receive type' . gettype($points));
     }
 
     if (count($points) < 2) {
-      throw new TcbException(INVALID_PARAM, '"points" must contain 2 points at least');
+      throw new TcbException(Code::INVALID_PARAM, '"points" must contain 2 points at least');
     }
 
     foreach ($points as $point) {
       if (!($point instanceof Point)) {
-        throw new TcbException(INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points)); // 工具方法gettype
+        throw new TcbException(Code::INVALID_PARAM, 'point must be of type Point. Receive type' . gettype($points)); // 工具方法gettype
       }
     }
 

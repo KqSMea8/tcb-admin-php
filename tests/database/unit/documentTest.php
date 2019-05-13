@@ -5,6 +5,8 @@ use PHPUnit\Framework\TestCase;
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Database\Util;
 use TencentCloudBase\TCB;
+use TencentCloudBase\Consts\Code;
+
 
 class DocumentTest extends TestCase
 {
@@ -86,7 +88,7 @@ class DocumentTest extends TestCase
     try {
       self::$collection->doc()->set(['name' => 'jude']);
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), INVALID_PARAM); // todo
+      $this->assertEquals($e->getErrorCode(), Code::INVALID_PARAM); // todo
     }
 
     // add one doc

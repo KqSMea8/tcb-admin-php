@@ -1,11 +1,8 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once "src/database/constants.php";
-
-require_once 'src/consts/code.php';
-
-
+// use const TencentCloudBase\Database\Constants\FieldType;
+use TencentCloudBase\Database\Constants;
 use TencentCloudBase\Database\Geo\LineString;
 use TencentCloudBase\Database\Geo\MultiLineString;
 use TencentCloudBase\Database\Geo\MultiPoint;
@@ -48,34 +45,34 @@ class Util
       $realVal = null;
 
       switch ($type) {
-        case FieldType["GeoPoint"]:
+        case Constants::FieldType["GeoPoint"]:
           $realVal = new Point($value['coordinates'][0], $value['coordinates'][1]);
           break;
-        case FieldType["GeoLineString"]:
+        case Constants::FieldType["GeoLineString"]:
           $realVal = new LineString(array_map(function ($item) {
             return new Point($item[0], $item[1]);
           }, $value['coordinates']));
           break;
-        case FieldType["GeoPolygon"]:
+        case Constants::FieldType["GeoPolygon"]:
           $realVal = new Polygon(array_map(function ($line) {
             return new LineString(array_map(function ($item) {
               return new Point($item[0], $item[1]);
             }, $line));
           }, $value['coordinates']));
           break;
-        case FieldType["GeoMultiPoint"]:
+        case Constants::FieldType["GeoMultiPoint"]:
           $realVal = new MultiPoint(array_map(function ($item) {
             return new Point($item[0], $item[1]);
           }, $value['coordinates']));
           break;
-        case FieldType["GeoMultiLineString"]:
+        case Constants::FieldType["GeoMultiLineString"]:
           $realVal = new MultiLineString(array_map(function ($line) {
             return new LineString(array_map(function ($item) {
               return new Point($item[0], $item[1]);
             }, $line));
           }, $value['coordinates']));
           break;
-        case FieldType["GeoMultiPolygon"]:
+        case Constants::FieldType["GeoMultiPolygon"]:
           $realVal = new MultiPolygon(array_map(function ($polygon) {
             return new Polygon(array_map(function ($line) {
               return new LineString(array_map(function ($item) {
@@ -84,14 +81,14 @@ class Util
             }, $polygon));
           }, $value['coordinates']));
           break;
-        case FieldType["Timestamp"]:
+        case Constants::FieldType["Timestamp"]:
           $realVal = $value['$timestamp'] * 1000; // getTimestamp是否能调
           break;
-        case FieldType["Object"]:
-        case FieldType["Array"]:
+        case Constants::FieldType["Object"]:
+        case Constants::FieldType["Array"]:
           $realVal = self::formatField($value);
           break;
-        case FieldType["ServerDate"]:
+        case Constants::FieldType["ServerDate"]:
           $realVal = $value['$date']; // 直接返回时间戳？
           break;
         default:
@@ -126,35 +123,35 @@ class Util
 
     if (self::is_assoc($obj)) {
       if (isset($obj['$timestamp'])) {
-        return FieldType['Timestamp'];
+        return Constants::FieldType['Timestamp'];
       } else if (isset($obj['$date'])) {
-        return FieldType['ServerDate'];
+        return Constants::FieldType['ServerDate'];
       } else if (Point::validate($obj)) {
-        return FieldType['GeoPoint'];
+        return Constants::FieldType['GeoPoint'];
       } else if (LineString::validate($obj)) {
-        return FieldType['GeoLineString'];
+        return Constants::FieldType['GeoLineString'];
       } else if (Polygon::validate($obj)) {
-        return FieldType['GeoPolygon'];
+        return Constants::FieldType['GeoPolygon'];
       } else if (MultiPoint::validate($obj)) {
-        return FieldType['GeoMultiPoint'];
+        return Constants::FieldType['GeoMultiPoint'];
       } else if (MultiLineString::validate($obj)) {
-        return FieldType['GeoMultiLineString'];
+        return Constants::FieldType['GeoMultiLineString'];
       } else if (MultiPolygon::validate($obj)) {
-        return FieldType['GeoMultiPolygon'];
+        return Constants::FieldType['GeoMultiPolygon'];
       }
     }
     // if ($obj instanceof Point) {
-    // 	return FieldType['GeoPoint'];
+    // 	return Constants::FieldType['GeoPoint'];
     // } elseif ($obj instanceof DateTime) {
-    // 	return FieldType['Timestamp'];
+    // 	return Constants::FieldType['Timestamp'];
     // } elseif ($obj instanceof Command) {
-    // 	return FieldType['Command'];
+    // 	return Constants::FieldType['Command'];
     // } elseif ($obj instanceof ServerDate) {
-    // 	return FieldType['ServerDate'];
+    // 	return Constants::FieldType['ServerDate'];
     // }
 
     if ($type === 'integer' || $type === 'double') {
-      return FieldType["Number"];
+      return Constants::FieldType["Number"];
     }
 
     return ucfirst($type);

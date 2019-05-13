@@ -1,10 +1,11 @@
 <?php
 namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/constants.php";
-require_once "src/consts/code.php";
+// require_once "src/database/constants.php";
+// require_once "src/consts/code.php";
 
-
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
 use TencentCloudBase\Database\Geo\Polygon;
 use TencentCloudBase\Utils\TcbException;
 
@@ -28,16 +29,16 @@ class MultiPolygon
   function __construct(array $polygons)
   {
     if (gettype($polygons) !== 'array') {
-      throw new TcbException(INVALID_PARAM, '"polygons" must be of type Polygon[]. Received type' . gettype($polygons));
+      throw new TcbException(Code::INVALID_PARAM, '"polygons" must be of type Polygon[]. Received type' . gettype($polygons));
     }
 
     if (count($polygons) === 0) {
-      throw new TcbException(INVALID_PARAM, 'MultiPolygon must contain 1 polygon at least');
+      throw new TcbException(Code::INVALID_PARAM, 'MultiPolygon must contain 1 polygon at least');
     }
 
     foreach ($polygons as $polygon) {
       if (!($polygon instanceof Polygon)) {
-        throw new TcbException(INVALID_PARAM, '"polygon" must be of type Polygon[]. Received type' . gettype($polygon));
+        throw new TcbException(Code::INVALID_PARAM, '"polygon" must be of type Polygon[]. Received type' . gettype($polygon));
       }
     }
 

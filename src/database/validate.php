@@ -1,11 +1,29 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once "src/consts/code.php";
-require_once "src/database/constants.php";
+// require_once "src/consts/code.php";
+// require_once "src/database/constants.php";
+
+// use const TencentCloudBase\Database\Constants\FieldType;
+// use const TencentCloudBase\Database\Constants\ErrorCode;
+// use const TencentCloudBase\Database\Constants\OrderDirectionList;
+// use const TencentCloudBase\Database\Constants\WhereFilterOpList;
+use TencentCloudBase\Database\Constants;
+
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+// use const TencentCloudBase\Consts\Code::INVALID_RANGE;
+// use const TencentCloudBase\Consts\Code::INVALID_TYPE;
+// use const TencentCloudBase\Consts\Code::DirectionError;
+// use const TencentCloudBase\Consts\Code::INVALID_FIELD_PATH;
+// use const TencentCloudBase\Consts\Code::OpStrError;
+// use const TencentCloudBase\Consts\Code::CollNameError;
+// use const TencentCloudBase\Consts\Code::DocIDError;
+use TencentCloudBase\Consts\Code;
+
 
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Database\Util;
+
 
 /**
  * 校验模块
@@ -28,17 +46,17 @@ class Validate
    */
   public static function isGeopoint($point, $degree)
   {
-    if (Util::whichType($degree) !== FieldType["Number"]) {
-      throw new TcbException(INVALID_TYPE, "Geo Point must be number type");
+    if (Util::whichType($degree) !== Constants::FieldType["Number"]) {
+      throw new TcbException(Code::INVALID_TYPE, "Geo Point must be number type");
     }
 
     // 位置的绝对值
     $degreeAbs = abs($degree);
 
     if ($point === "latitude" && $degreeAbs > 90) {
-      throw new TcbException(INVALID_RANGE, "latitude should be a number ranges from -90 to 90");
+      throw new TcbException(Code::INVALID_RANGE, "latitude should be a number ranges from -90 to 90");
     } else if ($point === "longitude" && $degreeAbs > 180) {
-      throw new TcbException(INVALID_RANGE, "longitude should be a number ranges from -180 to 180");
+      throw new TcbException(Code::INVALID_RANGE, "longitude should be a number ranges from -180 to 180");
     }
 
     return true;
@@ -54,7 +72,7 @@ class Validate
   public static function isInteger($param, $num)
   {
     if (!(is_int($num) || is_long($num))) {
-      throw new TcbException(INVALID_PARAM, $param . '' . ErrorCode['IntergerError']);
+      throw new TcbException(Code::INVALID_PARAM, $param . '' . Constants::ErrorCode['IntergerError']);
     }
     return true;
   }
@@ -68,8 +86,8 @@ class Validate
    */
   public static function isFieldOrder($direction)
   {
-    if (!in_array($direction, OrderDirectionList)) {
-      throw new TcbException(DirectionError, '排序字符不合法');
+    if (!in_array($direction, Constants::OrderDirectionList)) {
+      throw new TcbException(Code::DirectionError, '排序字符不合法');
     }
     return true;
   }
@@ -91,7 +109,7 @@ class Validate
   public static function isFieldPath($path)
   {
     if (!preg_match('/^[a-zA-Z0-9-_\.]/', $path)) {
-      throw new TcbException(INVALID_FIELD_PATH, '字段地址不合法');
+      throw new TcbException(Code::INVALID_FIELD_PATH, '字段地址不合法');
     }
     return true;
   }
@@ -104,8 +122,8 @@ class Validate
    */
   public static function isOperator($op)
   {
-    if (!in_array($op, WhereFilterOpList)) {
-      throw new TcbException(OpStrError, "操作符不合法");
+    if (!in_array($op, Constants::WhereFilterOpList)) {
+      throw new TcbException(Code::OpStrError, "操作符不合法");
     }
     return true;
   }
@@ -123,7 +141,7 @@ class Validate
   public static function isCollName(string $name)
   {
     if (!preg_match('/^[a-zA-Z0-9]([a-zA-Z0-9-_]){1,32}$/', $name)) {
-      throw new TcbException(CollNameError, '集合名称不合法');
+      throw new TcbException(Code::CollNameError, '集合名称不合法');
     }
     return true;
   }
@@ -137,7 +155,7 @@ class Validate
   public static function isDocID(string $docId)
   {
     if (!preg_match('/^([a-fA-F0-9]){24}$/', $docId)) {
-      throw new TcbException(DocIDError, 'DocID 格式不合法');
+      throw new TcbException(Code::DocIDError, 'DocID 格式不合法');
     }
     return true;
   }

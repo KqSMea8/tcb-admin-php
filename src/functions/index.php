@@ -1,9 +1,13 @@
 <?php
 namespace TencentCloudBase\Functions;
 
-require_once 'src/consts/code.php';
+// require_once 'src/consts/code.php';
+
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\Utils\TcbBase;
+// use const TencentCloudBase\Consts\Code::FUNCTIONS_NAME_REQUIRED;
+use TencentCloudBase\Consts\Code;
+
 use \Exception;
 
 class TcbFunctions extends TcbBase
@@ -20,7 +24,7 @@ class TcbFunctions extends TcbBase
   {
 
     if (!array_key_exists('name', $options)) {
-      throw new TcbException(FUNCTIONS_NAME_REQUIRED, '函数名不能为空');
+      throw new TcbException(Code::FUNCTIONS_NAME_REQUIRED, '函数名不能为空');
     }
 
     // 环境变量中取wxCloudApiToken

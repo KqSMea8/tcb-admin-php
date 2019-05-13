@@ -1,7 +1,7 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once 'src/consts/code.php';
+// require_once 'src/consts/code.php';
 
 use TencentCloudBase\Database\Geo\LineString;
 use TencentCloudBase\Database\Geo\MultiLineString;
@@ -16,6 +16,8 @@ use TencentCloudBase\Database\Regexp\RegExp;
 
 use TencentCloudBase\Database\Command;
 use TencentCloudBase\Utils\Request;
+// use const TencentCloudBase\Consts\Code::EMPTY_PARAM;
+use TencentCloudBase\Consts\Code;
 
 class Db
 {
@@ -112,7 +114,7 @@ class Db
   public function collection($collName = null)
   {
     if (!isset($collName)) {
-      throw new TcbException(EMPTY_PARAM, "Collection name is required");
+      throw new TcbException(Code::EMPTY_PARAM, "Collection name is required");
     }
 
     return new CollectionReference($this, $collName);
@@ -127,7 +129,7 @@ class Db
   public function createCollection($collName = null)
   {
     // if (!isset($collName)) {
-    //     throw new TencentCloudSDKException(EMPTY_PARAM, "Collection name is required");
+    //     throw new TencentCloudSDKException(Code::EMPTY_PARAM, "Collection name is required");
     // }
 
     $request = new Request($this->config);

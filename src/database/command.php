@@ -1,7 +1,7 @@
 <?php
 namespace TencentCloudBase\Database;
 
-require_once "src/database/constants.php";
+// require_once "src/database/constants.php";
 
 use TencentCloudBase\Database\Geo\LineString;
 use TencentCloudBase\Database\Geo\MultiLineString;
@@ -14,6 +14,9 @@ use TencentCloudBase\Database\Utils\Format;
 use TencentCloudBase\Database\Commands\LogicCommand;
 use TencentCloudBase\Database\Commands\QueryCommand;
 use TencentCloudBase\Database\Commands\UpdateCommand;
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
+
 use \TypeError;
 
 class Command
@@ -80,7 +83,7 @@ class Command
 
     if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
       throw new TcbException(
-        INVALID_PARAM,
+        Code::INVALID_PARAM,
         '"val" must be of type array or object. Received type ' . gettype($val)
       );
     }
@@ -91,7 +94,7 @@ class Command
 
     if (!($geometry instanceof Point)) {
       throw new TcbException(
-        INVALID_PARAM,
+        Code::INVALID_PARAM,
         '"geometry" must be of type Point. Received type ' . gettype($geometry)
       );
     }
@@ -122,7 +125,7 @@ class Command
 
     if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
       throw new TcbException(
-        INVALID_PARAM,
+        Code::INVALID_PARAM,
         '"val" must be of type array or object. Received type ' . gettype($val)
       );
     }
@@ -150,7 +153,7 @@ class Command
 
     if (!$isObject && !$isArray) { // 不是object 与 array类型， 直接报错
       throw new TcbException(
-        INVALID_PARAM,
+        Code::INVALID_PARAM,
         '"val" must be of type array or object. Received type ' . gettype($val)
       );
     }

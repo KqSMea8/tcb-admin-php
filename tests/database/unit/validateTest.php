@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use TencentCloudBase\Database\Validate;
 use TencentCloudBase\Utils\TcbException;
 use TencentCloudBase\TCB;
+use TencentCloudBase\Consts\Code;
 
 class ValidateTest extends TestCase
 {
@@ -56,7 +57,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isFieldOrder("desc1");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), DirectionError);
+      $this->assertEquals($e->getErrorCode(), Code::DirectionError);
     }
   }
 
@@ -70,7 +71,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isOperator("<+");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), OpStrError);
+      $this->assertEquals($e->getErrorCode(), Code::OpStrError);
     }
   }
 
@@ -84,7 +85,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isCollName("_coll-1");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), CollNameError);
+      $this->assertEquals($e->getErrorCode(), Code::CollNameError);
     }
   }
 
@@ -93,7 +94,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isCollName("coll-1_@#$");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), CollNameError);
+      $this->assertEquals($e->getErrorCode(), Code::CollNameError);
     }
   }
 
@@ -102,7 +103,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isCollName("");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), CollNameError);
+      $this->assertEquals($e->getErrorCode(), Code::CollNameError);
     }
   }
 
@@ -111,7 +112,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isCollName("abcdefgh12abcdefgh12abcdefgh12abcdefgh12");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), CollNameError);
+      $this->assertEquals($e->getErrorCode(), Code::CollNameError);
     }
   }
 
@@ -126,7 +127,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isDocID("");
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), DocIDError);
+      $this->assertEquals($e->getErrorCode(), Code::DocIDError);
     }
   }
 
@@ -136,7 +137,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isDocID($docId);
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), DocIDError);
+      $this->assertEquals($e->getErrorCode(), Code::DocIDError);
     }
   }
 
@@ -146,7 +147,7 @@ class ValidateTest extends TestCase
     try {
       self::$validateIns->isDocID($docId);
     } catch (TcbException $e) {
-      $this->assertEquals($e->getErrorCode(), DocIDError);
+      $this->assertEquals($e->getErrorCode(), Code::DocIDError);
     }
   }
 }

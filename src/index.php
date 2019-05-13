@@ -2,6 +2,10 @@
 namespace TencentCloudBase;
 
 use TencentCloudBase\Database\Db;
+use TencentCloudBase\Functions\TcbFunctions;
+use TencentCloudBase\Storage\TcbStorage;
+use TencentCloudBase\Consts\Code;
+
 
 class TCB
 {
@@ -26,9 +30,9 @@ class TCB
 
     if (!$this->config['secretKey'] || !$this->config['secretId']) {
       if (getenv('TENCENTCLOUD_RUNENV') === 'SCF') {
-        throw new TcbException(INVALID_PARAM, "missing authoration key, redeploy the function");
+        throw new TcbException(Code::INVALID_PARAM, "missing authoration key, redeploy the function");
       }
-      throw new TcbException(INVALID_PARAM, "missing secretId or secretKey of tencent cloud");
+      throw new TcbException(Code::INVALID_PARAM, "missing secretId or secretKey of tencent cloud");
     }
 
     if (array_key_exists('isHttp', $options)) {

@@ -1,11 +1,14 @@
 <?php
 namespace TencentCloudBase\Database\Geo;
 
-require_once "src/database/constants.php";
-require_once "src/consts/code.php";
+// require_once "src/database/constants.php";
+// require_once "src/consts/code.php";
 
 use TencentCloudBase\Database\Geo\LineString;
 use TencentCloudBase\Utils\TcbException;
+// use const TencentCloudBase\Consts\Code::INVALID_PARAM;
+use TencentCloudBase\Consts\Code;
+
 
 /**
  * 地理位置
@@ -27,16 +30,16 @@ class Polygon
   function __construct(array $lines)
   {
     if (gettype($lines) !== 'array') {
-      throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($lines));
+      throw new TcbException(Code::INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($lines));
     }
 
     if (count($lines) === 0) {
-      throw new TcbException(INVALID_PARAM, 'Polygon must contain 1 linestring at least');
+      throw new TcbException(Code::INVALID_PARAM, 'Polygon must contain 1 linestring at least');
     }
 
     foreach ($lines as $line) {
       if (!($line instanceof LineString)) {
-        throw new TcbException(INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($line));
+        throw new TcbException(Code::INVALID_PARAM, '"lines" must be of type LineString[]. Received type' . gettype($line));
       }
       if (!LineString::isClosed($line)) {
 
@@ -44,7 +47,7 @@ class Polygon
           return $item->toReadableString();
         }, $line->points));
 
-        throw new TcbException(INVALID_PARAM, 'LineString ' . $readbleStr . ' is not a closed cycle');
+        throw new TcbException(Code::INVALID_PARAM, 'LineString ' . $readbleStr . ' is not a closed cycle');
       }
     }
 
