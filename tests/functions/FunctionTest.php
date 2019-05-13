@@ -1,7 +1,7 @@
 <?php
-require_once "tests/autoload.php";
+// require_once "tests/autoload.php";
 
-require __DIR__ . "/../../vendor/autoload.php";
+// require __DIR__ . "/../../vendor/autoload.php";
 
 use PHPUnit\Framework\TestCase;
 use TencentCloudBase\TCB;
@@ -23,7 +23,6 @@ class FunctionTest extends TestCase
   {
     try {
       $functions = self::$tcb->getFunctions();
-      echo '********************' . PHP_EOL;
       $result = $functions->callFunction([
         "name" => "test",
         "data" => array('a' => 1)
@@ -32,7 +31,6 @@ class FunctionTest extends TestCase
       $this->assertEquals($result["result"]->a, 1);
     } catch (Exception $e) {
       $code = method_exists($e, 'getErrorCode') ? $e->getErrorCode() : $e->getCode();
-      echo '&&&&&&&&&&&&&&&&&&' . PHP_EOL;
       echo $code;
       echo "\r\n";
       echo $e->getMessage();

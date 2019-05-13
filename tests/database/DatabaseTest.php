@@ -1,5 +1,5 @@
 <?php
-require_once "tests/autoload.php";
+// require_once "tests/autoload.php";
 
 use PHPUnit\Framework\TestCase;
 use TencentCloudBase\TCB;

@@ -25,8 +25,8 @@ class TCB
     $this->config = [];
 
     // TODO: 检查 secret
-    $this->config['secretId'] = $options['secretId'];
-    $this->config['secretKey'] = $options['secretKey'];
+    $this->config['secretId'] = isset($options['secretId']) ? $options['secretId'] : getenv('TENCENTCLOUD_SECRETID');
+    $this->config['secretKey'] = isset($options['secretKey']) ? $options['secretKey'] : getenv('TENCENTCLOUD_SECRETKEY');
 
     if (!$this->config['secretKey'] || !$this->config['secretId']) {
       if (getenv('TENCENTCLOUD_RUNENV') === 'SCF') {
