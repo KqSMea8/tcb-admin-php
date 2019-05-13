@@ -95,6 +95,8 @@ class TcbBase
     $pathname = "/admin";
     $params = $args['params'];
     $defaultTimeout = 15;
+    $composerJson = json_decode(file_get_contents('composer.json'), true);
+    $sdk_version = $composerJson['version'];
 
 
     $paramsAdd = array('timestamp' => self::getMilTimeseconds(), 'eventId' => self::getEventId());
@@ -136,7 +138,7 @@ class TcbBase
       'Method' => $method,
       'pathname' => $pathname,
       'Query' => $params,
-      'Headers' => array_merge($args['headers'], array('user-agent' => 'tcb-admin-sdk/1.5.0-beta.1'))
+      'Headers' => array_merge($args['headers'], array('user-agent' => 'tcb-admin-php/' . $sdk_version))
     );
 
     $auth = new Auth($authObj);
@@ -156,7 +158,7 @@ class TcbBase
       $params['sessionToken'] = $config['sessionToken'];
     }
 
-    $params['sdk_version'] = '1.5.0-beta.1'; // todo 
+    $params['sdk_version'] = $sdk_version; // todo 
 
 
     // ??url
