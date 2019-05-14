@@ -74,7 +74,6 @@ $db = $tcb->getDatabase();
 
 ```php
 // 获取 `user` 集合的引用
-// $collection = $db->collection("user");
 $collection = $db->collection("user");
 ```
 
@@ -102,10 +101,10 @@ $collection = $db->collection("user");
 
 | 接口 | 说明   |
 | ---- | ------ |
-| 写   | set    | 覆写记录 |
+| 写   | set    | 覆写记录               |
 |      | update | 局部更新记录(触发请求) |
-|      | remove | 删除记录(触发请求) |
-| 读   | get    | 获取记录(触发请求) |
+|      | remove | 删除记录(触发请求)     |
+| 读   | get    | 获取记录(触发请求)     |
 
 #### 查询筛选指令 Query Command
 
@@ -386,7 +385,7 @@ $db->collection("articles")->where([
 // 这种写法表示 stat 对象等于 [ publishYear=> 2018, language=> 'zh-CN' ]
 $_ = $db->command;
 $db->collection("articles")->where([
-  stat=> $_->eq([
+  'stat'=> $_->eq([
     'publishYear'=> 2018,
     'language'=> "zh-CN"
   ])
@@ -574,7 +573,7 @@ $db->collection('articles')->where([
 
 ```php
 // 删除字段a的值大于2的文档
-collection
+$collection
   ->where([
     'a' => $_->gt(2)
   ])

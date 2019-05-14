@@ -30,6 +30,6 @@ $tcb = new Tcb([]);
 $tcb = new Tcb(['env'=> "xxx"]);
 
 //修改请求超时时间
-$tcb = new Tcb(['timeout'=> 5000]);
+$tcb = new Tcb(['timeout'=> 5]);
 
 ```
